@@ -1,2 +1,2 @@
 # SkuldsShader
-All purpose shader with Toon effect for Unity
+All purpose shader with toon effect for Unity
