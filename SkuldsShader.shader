@@ -83,7 +83,7 @@
 			#include "AutoLight.cginc"
 			#include "UnityPBSLighting.cginc"
 
-			#pragma target 5.0
+			#pragma target 3.5
 			#pragma vertex vert
 			#pragma fragment frag
 			#pragma multi_compile _ SHADOWS_SCREEN
@@ -105,7 +105,7 @@
 			#include "AutoLight.cginc"
 			#include "UnityPBSLighting.cginc"
 
-			#pragma target 5.0
+			#pragma target 3.5
 			
 			#pragma vertex vert
 			#pragma fragment frag
@@ -126,7 +126,7 @@
 			#include "AutoLight.cginc"
 			#include "UnityPBSLighting.cginc"
 
-			#pragma target 5.0
+			#pragma target 3.5
 			
 			#pragma vertex vert
 			#pragma fragment frag
