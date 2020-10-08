@@ -28,7 +28,7 @@ float3 Shade4PointLightsFixed(
 	// correct NdotL
 	float4 corr = rsqrt(lengthSq);
 	ndotl = max(float4(0, 0, 0, 0), ndotl * corr);
-
+	ndotl = ApplyProceduralToonRamp(ndotl);
 	// attenuation
 	float4 atten = 1.0 / (1.0 + lengthSq * lightAttenSq);
 	//modified portion:

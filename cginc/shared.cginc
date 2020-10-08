@@ -89,12 +89,12 @@ PIO adjustProcess(PIO process, uint isFrontFace)
 
 #if !UNITY_PASS_SHADOWCASTER
 #include "featureMap.cginc"
+#include "toon.cginc"
 #include "vertexLights.cginc"
 #include "HSV.cginc"
 #include "detailLayer.cginc"
 #include "glow.cginc"
 #include "shadows.cginc"
-#include "toon.cginc"
 #include "light.cginc"
 #include "normals.cginc"
 #include "specular.cginc"
