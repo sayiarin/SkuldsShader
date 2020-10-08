@@ -8,11 +8,11 @@ using System.Linq;
 
 public class SkuldsShaderEditor : ShaderGUI
 {
-    MaterialEditor materialEditor;
-    MaterialProperty[] properties;
-    Material material;
-    GUIStyle skuldHeader = null;
-    bool initialized = false;
+    protected MaterialEditor materialEditor;
+    protected MaterialProperty[] properties;
+    protected Material material;
+    protected GUIStyle skuldHeader = null;
+    protected bool initialized = false;
 
     public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
     {

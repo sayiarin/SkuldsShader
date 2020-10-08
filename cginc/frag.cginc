@@ -8,6 +8,8 @@ float4 frag(PIO process, uint isFrontFace : SV_IsFrontFace) : SV_Target
 	float finalAlpha = color.a;
 	color = HSV(color, _Hue, _Saturation, _Value);
 
+	float4 baseColor = color; //for any alternative calculations.
+
 	if (_NormalScale > 0) {
 		applyNormalMap(process);
 	}
@@ -28,6 +30,14 @@ float4 frag(PIO process, uint isFrontFace : SV_IsFrontFace) : SV_Target
 
 		color = applyDetailLayer(process, color, _DetailUnlit);
 		color = applyGlow(process, color);
+		
+		#if defined(LFRT)
+			baseColor = applyReflectionProbe(baseColor, process, _Smoothness, _Reflectiveness);
+			baseColor = applyDetailLayer(process, baseColor, 1 - _DetailUnlit);
+			baseColor = applySpecular(process, baseColor);
+			//just gets added like a foward add light.
+			color = applyLFRTColor(process, color, baseColor);
+		#endif
 	#else
 		color = applyReflectionProbe(color, process, _Smoothness, _Reflectiveness);
 		color = applyDetailLayer(process, color, 1 - _DetailUnlit);

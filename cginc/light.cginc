@@ -44,7 +44,8 @@ float4 applyLight(PIO process, float4 color) {
 	#if defined(LIGHTMAP_ON)
 		float3 lightmapCol = DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, process.lmuv));
 		lightmapCol += _LMBrightness;
-		output.rgb += color.rgb * lightmapCol;
+		output.rgb += lerp( color.rgb * lightmapCol, color.rgb, _ShadeMin);
+		output.rgb = max(0, output.rgb);
 	#else
 		//ambient color (lightprobes): 
 		float3 probeColor = ShadeSH9(float4(0, 0, 0, 1));

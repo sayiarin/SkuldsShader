@@ -95,6 +95,9 @@ PIO adjustProcess(PIO process, uint isFrontFace)
 #include "detailLayer.cginc"
 #include "glow.cginc"
 #include "shadows.cginc"
+#if defined(LFRT)
+#include "lfrt.cginc"
+#endif
 #include "light.cginc"
 #include "normals.cginc"
 #include "specular.cginc"
