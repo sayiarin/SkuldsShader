@@ -77,7 +77,7 @@ float4 applySpecular(PIO o, float4 color)
 	//apply light colors
 	float d = SpecDot(direction, normalize(reflectDir), o.attenuation);
 	float3 lightColor = _LightColor0.rgb * d;
-	#if defined(UNITY_PASS_FORWARDBASE)
+	#if defined(UNITY_PASS_FORWARDBASE) && !defined(LIGHTMAP_ON)
 		float3 ambientDirection = normalize(unity_SHAr.xyz + unity_SHAg.xyz + unity_SHAb.xyz);
 		d = SpecDot(ambientDirection, normalize(reflectDir), o.attenuation);
 		lightColor += max(0,ShadeSH9(float4(0, 0, 0, 1))) * d;
