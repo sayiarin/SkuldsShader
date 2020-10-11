@@ -23,9 +23,8 @@ float4 applyFresnel(PIO process, float4 inColor) {
 	float rim = 1 - val * _FresnelRetract;
 	rim = max(0, rim);
 	rim *= _FresnelColor.a * alpha * _Specular;
-	float orim = 1 - rim;
 	float4 color;
-	inColor.rgb = (_FresnelColor * rim) + (inColor * orim);
+	inColor.rgb = lerp(inColor,_FresnelColor, rim);
 	return inColor;
 }
 
