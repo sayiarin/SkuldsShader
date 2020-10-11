@@ -21,29 +21,29 @@ float4 frag(PIO process, uint isFrontFace : SV_IsFrontFace) : SV_Target
 	process = adjustProcess(process, isFrontFace);
 
 	#ifdef UNITY_PASS_FORWARDBASE
-		color = applyReflectionProbe(color, process, _Smoothness, _Reflectiveness);
 		color = applyDetailLayer(process, color, 1-_DetailUnlit);
 
 		color = applyFresnel(process, color);
 		color = applySpecular(process, color);
 		color = applyLight(process, color);
+		color = applyReflectionProbe(color, process, _Smoothness, _Reflectiveness);
 
 		color = applyDetailLayer(process, color, _DetailUnlit);
 		color = applyGlow(process, color);
 		
 		#if defined(LFRT)
-			baseColor = applyReflectionProbe(baseColor, process, _Smoothness, _Reflectiveness);
 			baseColor = applyDetailLayer(process, baseColor, 1 - _DetailUnlit);
 			baseColor = applySpecular(process, baseColor);
+			baseColor = applyReflectionProbe(baseColor, process, _Smoothness, _Reflectiveness);
 			//just gets added like a foward add light.
 			color = applyLFRTColor(process, color, baseColor);
 		#endif
 	#else
-		color = applyReflectionProbe(color, process, _Smoothness, _Reflectiveness);
 		color = applyDetailLayer(process, color, 1 - _DetailUnlit);
 
 		color = applySpecular(process, color);
 		color = applyLight(process, color);
+		color = applyReflectionProbe(color, process, _Smoothness, _Reflectiveness);
 
 		color = applyDetailLayerForward(process, color, _DetailUnlit);
 		color = applyGlowForward(process, color);
