@@ -43,7 +43,10 @@ float4 frag(PIO process, uint isFrontFace : SV_IsFrontFace) : SV_Target
 
 		color = applySpecular(process, color);
 		color = applyLight(process, color);
-		color = applyReflectionProbe(color, process, _Smoothness, _Reflectiveness);
+		//Should not be added to FowardAdd.	
+		//color = applyReflectionProbe(color, process, _Smoothness, _Reflectiveness);
+		//Do this:
+		color = lerp(color, 0, _Reflectiveness);
 
 		color = applyDetailLayerForward(process, color, _DetailUnlit);
 		color = applyGlowForward(process, color);

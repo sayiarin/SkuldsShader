@@ -14,7 +14,10 @@ float4 applyLight(PIO process, float4 color) {
 	float3 direction = normalize(_WorldSpaceLightPos0.xyz - process.worldPosition.xyz);
 	#if defined(POINT_COOKIE) || defined(SPOT) 
 		//let spotlights just be spotlights.
-		float brightness = dot(direction,process.worldNormal) * process.attenuation;
+		float brightness = dot(direction, process.worldNormal);
+		brightness += 1;
+		brightness /= 2;
+		brightness *= process.attenuation;
 	#else
 		float brightness = ToonDot(direction, process.worldNormal, process.attenuation);
 	#endif
