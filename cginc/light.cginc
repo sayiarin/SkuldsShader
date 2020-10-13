@@ -68,7 +68,7 @@ float4 applyLight(PIO process, float4 color) {
 				unity_LightColor[2].rgb, unity_LightColor[3].rgb,
 				unity_4LightAtten0, process.worldPosition, process.worldNormal
 			);
-			output.rgb = vcolor * color.rgb;
+			output.rgb += vcolor * color.rgb;
 		#endif
 
 		//minimum Shade Value (forced ambient):
