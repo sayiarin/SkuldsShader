@@ -10,5 +10,8 @@ void ApplyFeatureMap(PIO process) {
 	_Specular *= features.r;
 	_Smoothness *= features.g;
 	_Reflectiveness *= features.b;
+#if defined(LIGHTMAP_ON)
+	_Reflectiveness *= min(1,_FinalBrightness);
+#endif
 	_Height *= features.a;
 }

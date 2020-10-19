@@ -48,6 +48,7 @@ struct PIO
 
 int _RenderType;
 float _LMBrightness;
+float _FinalBrightness;
 
 //Base Layer paramters
 sampler2D _MainTex;

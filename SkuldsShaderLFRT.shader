@@ -8,6 +8,7 @@
 		_ShadeMax("Max Brightness", Range(0,2)) = 2.0
 		_ShadeMin("Min Brightness",Range(0,1)) = 0.0
 		_LMBrightness("Added Lightmap Brightness", Range(-1,1)) = 0
+		_FinalBrightness("Final Brightness",Range(0,5)) = 1
 
 		[space]
 		_MainTex("Base Layer", 2D) = "white" {}

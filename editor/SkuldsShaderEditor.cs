@@ -264,6 +264,8 @@ public class SkuldsShaderEditor : ShaderGUI
             EditorGUILayout.BeginVertical(EditorStyles.textArea);
             MaterialProperty lmb = FindProperty("_LMBrightness", properties);
             materialEditor.RangeProperty(lmb, "Light Map Brightness Adjustment:");
+            MaterialProperty lmfb = FindProperty("_FinalBrightness", properties);
+            materialEditor.RangeProperty(lmfb, "Final Brightness Multiplier:");
             EditorGUILayout.EndVertical();
         }
     }

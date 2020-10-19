@@ -49,6 +49,7 @@ float4 applyLight(PIO process, float4 color) {
 		lightmapCol += _LMBrightness;
 		output.rgb += lerp( color.rgb * lightmapCol, color.rgb, _ShadeMin);
 		output.rgb = max(0, output.rgb);
+		output.rgb *= _FinalBrightness;
 	#else
 		//ambient color (lightprobes): 
 		float3 probeColor = ShadeSH9(float4(0, 0, 0, 1));
