@@ -29,7 +29,6 @@ float4 frag(PIO process, uint isFrontFace : SV_IsFrontFace) : SV_Target
 		color = applyReflectionProbe(color, process, _Smoothness, _Reflectiveness);
 
 		color = applyDetailLayer(process, color, _DetailUnlit);
-		color = applyGlow(process, color);
 		
 		#if defined(LFRT)
 			baseColor = applyDetailLayer(process, baseColor, 1 - _DetailUnlit);
@@ -38,6 +37,8 @@ float4 frag(PIO process, uint isFrontFace : SV_IsFrontFace) : SV_Target
 			//just gets added like a foward add light.
 			color = applyLFRTColor(process, color, baseColor);
 		#endif
+		color = saturate(color);
+		color = applyGlow(process, color);
 	#else
 		color = applyDetailLayer(process, color, 1 - _DetailUnlit);
 
@@ -49,10 +50,11 @@ float4 frag(PIO process, uint isFrontFace : SV_IsFrontFace) : SV_Target
 		color = lerp(color, 0, _Reflectiveness);
 
 		color = applyDetailLayerForward(process, color, _DetailUnlit);
+		color = saturate(color);
 		color = applyGlowForward(process, color);
 	#endif
 
-	color = saturate(color);
+	
 	if (_RenderType == 0) {
 		color.a = 1;
 	}

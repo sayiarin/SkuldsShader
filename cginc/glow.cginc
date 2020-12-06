@@ -59,11 +59,9 @@ float4 applyGlow(PIO process, float4 col) {
 
 	float3 glowCol = mask.rgb;
 	if (_GlowRainbow == 1) {
-		glowCol *= normalize(shiftColor(float3(1, 0, 0), _Time.y * 360));
+		glowCol *= shiftColor(float3(1, 0, 0), _Time.y * 360);
 	}
-	else {
-		glowCol *= _GlowColor.rgb;
-	}
+	glowCol *= _GlowColor.rgb;
 
 	float glowAmt = getGlowAmount(process, col, mask.a);
 

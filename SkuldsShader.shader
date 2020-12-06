@@ -43,7 +43,7 @@
 		_Glow("Detail Glow", Int) = 0
 		_GlowAmount("Glow Amount",Range(0,1)) = 1
 		_GlowTex("Detail Layer", 2D) = "black" {}
-		_GlowColor("Glow Color", Color) = (1, 1, 1, 1)
+		[HDR]_GlowColor("Glow Color", Color) = (1, 1, 1, 1)
 		_GlowSpeed("Glow Speed",float) = 100.0
 		_GlowSqueeze("Glow Squeeze",float) = 10.0
 		_GlowSharpness("Glow Sharpness",float) = 1.0
