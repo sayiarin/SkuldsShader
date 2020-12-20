@@ -289,6 +289,8 @@ public class SkuldsShaderEditor : ShaderGUI
             materialEditor.RangeProperty(saturation, "Saturation:");
             MaterialProperty value = FindProperty("_Value", properties);
             materialEditor.RangeProperty(value, "Value:");
+            MaterialProperty contrast = FindProperty("_Contrast", properties);
+            materialEditor.RangeProperty(contrast, "Contrast:");
             EditorGUILayout.EndVertical();
         }
     }

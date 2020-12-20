@@ -7,6 +7,8 @@ float4 frag(PIO process, uint isFrontFace : SV_IsFrontFace) : SV_Target
 	float4 color = tex2D(_MainTex, process.uv + process.uvOffset) * _Color;
 	float finalAlpha = color.a;
 	color = HSV(color, _Hue, _Saturation, _Value);
+	color = Contrast(color, _Contrast);
+	//apply contrast
 
 	float4 baseColor = color; //for any alternative calculations.
 

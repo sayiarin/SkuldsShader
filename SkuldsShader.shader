@@ -16,7 +16,7 @@
 		_Hue("Hue",Range(-180,180)) = 0
 		_Saturation("Saturation",Range(-1,10)) = 0
 		_Value("Value",Range(-1,2)) = 0
-		//hsv should go here.
+		_Contrast("Contrast",Range(0,10)) = 1
 
 		[space]//specular, normals, smoothness and normals (Needs Height)
 		[Normal] _NormalTex("Normal Map", 2D) = "bump" {}

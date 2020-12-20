@@ -2,6 +2,7 @@
 float _Hue;
 float _Saturation;
 float _Value;
+float _Contrast;
 
 float3 shiftColor(float3 inColor, float shift)
 {
@@ -28,5 +29,12 @@ float4 HSV(float4 color, float hue, float sat, float val) {
 
 	color.rgb = lerp(avg,color.rgb, sat+1);
 	color.rgb += val;
+	return color;
+}
+
+float4 Contrast(float4 color, float con) {
+	color.rgb -= .5f;
+	color.rgb *= con;
+	color.rgb += .5f;
 	return color;
 }
