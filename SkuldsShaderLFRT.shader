@@ -12,7 +12,7 @@
 
 		[space]
 		_MainTex("Base Layer", 2D) = "white" {}
-		_Color("Base Color",Color) = (1,1,1,1)
+		[HDR]_Color("Base Color",Color) = (1,1,1,1)
 		_Hue("Hue",Range(-180,180)) = 0
 		_Saturation("Saturation",Range(-1,10)) = 0
 		_Value("Value",Range(-1,2)) = 0
@@ -36,7 +36,7 @@
 		[space]
 		_DetailLayer("Enable Detail Layer",Int) = 0
 		_DetailTex("Detail Layer", 2D) = "black" {}
-		_DetailColor("Detail Color", Color) = (1, 1, 1, 1)
+		[HDR]_DetailColor("Detail Color", Color) = (1, 1, 1, 1)
 		_DetailUnlit("Detail Unlit", Int) = 0
 
 		[space]
