@@ -90,6 +90,7 @@ public class SkuldsShaderEditor : ShaderGUI
             materialEditor.RangeProperty(specSize, "Size:");
             MaterialProperty specRef = FindProperty("_SpecularReflection", properties);
             materialEditor.RangeProperty(specRef, "Reflection Balance:");
+            CreateToggleFromProperty("Ignore Attenuation:", "_SpecularIgnoreAtten");
             EditorGUILayout.EndVertical();
 
             EditorGUILayout.LabelField("Fresnel:", EditorStyles.boldLabel);

@@ -28,6 +28,7 @@
 		_Specular("Specular", Range(0,1)) = 0
 		_SpecularSize("Specular Size",Range(.001,1)) = .1
 		_SpecularReflection("Specular Reflection",Range(0,1)) = .5
+		_SpecularIgnoreAtten("Specular Ignore Attenuation",Int) = 0
 		_Smoothness("Smoothness", Range(0,1)) = 0
 		_Reflectiveness("Reflectiveness",Range(0,1)) = 0
 		_Height("Height",Range(0,1)) = 0

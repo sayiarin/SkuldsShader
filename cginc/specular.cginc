@@ -3,6 +3,7 @@ float4 _FresnelColor;
 float _FresnelRetract;
 float _SpecularSize;
 float _SpecularReflection;
+float _SpecularIgnoreAtten;
 
 float4 applyFresnel(PIO process, float4 inColor) {
 #if defined(UNITY_PASS_FORWARDADD)
@@ -56,15 +57,15 @@ float4 applySpecular(PIO o, float4 color)
 
 	switch (_ReflectType) {
 		default:
-		case 0:
-			result = lerp(result, refColor, _SpecularReflection);
-			break;
-		case 1:
-			result = result * refColor * _SpecularReflection;
-			break;
-		case 2:
-			result = result + (refColor * _SpecularReflection);
-			break;
+			case 0:
+				result = lerp(result, refColor, _SpecularReflection);
+				break;
+			case 1:
+				result = result * refColor * _SpecularReflection;
+				break;
+			case 2:
+				result = result + (refColor * _SpecularReflection);
+				break;
 	}
 	
 	#if defined(UNITY_PASS_FORWARDADD)
@@ -74,11 +75,11 @@ float4 applySpecular(PIO o, float4 color)
 	#endif
 
 	//apply light colors
-	float d = SpecDot(direction, normalize(reflectDir), o.attenuation);
+	float d = SpecDot(direction, normalize(reflectDir), max(o.attenuation, _SpecularIgnoreAtten));
 	float3 lightColor = _LightColor0.rgb * d;
 	#if defined(UNITY_PASS_FORWARDBASE) && !defined(LIGHTMAP_ON)
 		float3 ambientDirection = normalize(unity_SHAr.xyz + unity_SHAg.xyz + unity_SHAb.xyz);
-		d = SpecDot(ambientDirection, normalize(reflectDir), o.attenuation);
+		d = SpecDot(ambientDirection, normalize(reflectDir), max(o.attenuation, _SpecularIgnoreAtten));
 		lightColor += max(0,ShadeSH9(float4(0, 0, 0, 1))) * d;
 	#endif
 
