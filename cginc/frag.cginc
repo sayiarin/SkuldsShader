@@ -39,7 +39,7 @@ float4 frag(PIO process, uint isFrontFace : SV_IsFrontFace) : SV_Target
 			//just gets added like a foward add light.
 			color = applyLFRTColor(process, color, baseColor);
 		#endif
-		color = saturate(color);
+		color = max(color,0);
 		color = applyGlow(process, color);
 	#else
 		color = applyDetailLayer(process, color, 1 - _DetailUnlit);
@@ -52,7 +52,7 @@ float4 frag(PIO process, uint isFrontFace : SV_IsFrontFace) : SV_Target
 		//color = lerp(color, 0, _Reflectiveness);
 
 		color = applyDetailLayerForward(process, color, _DetailUnlit);
-		color = saturate(color);
+		color = max(color,0);
 		color = applyGlowForward(process, color);
 	#endif
 
