@@ -1,6 +1,28 @@
 #pragma once
 #define BINORMAL_PER_FRAGMENT
 
+#if defined(TERRAIN)
+float _FadeRange;
+
+sampler2D _Tex3;
+float4 _Tex3_ST;
+sampler2D _Tex2;
+float4 _Tex2_ST;
+sampler2D _Tex1;
+float4 _Tex1_ST;
+
+sampler2D _Normal3;
+float4 _Normal3_ST;
+sampler2D _Normal2;
+float4 _Normal2_ST;
+sampler2D _Normal1;
+float4 _Normal1_ST;
+
+float _Height1;
+float _Height2;
+float _Height3;
+#endif
+
 //general IO with Semantics
 struct IO
 {
@@ -105,7 +127,11 @@ PIO adjustProcess(PIO process, uint isFrontFace)
 #include "reflections.cginc"
 #include "height.cginc"
 #include "vert.cginc"
+#if defined(TERRAIN)
+#include "terrainFrag.cginc"
+#else
 #include "frag.cginc"
+#endif
 #else 
 #include "vert.cginc"
 #include "shadowFrag.cginc"
