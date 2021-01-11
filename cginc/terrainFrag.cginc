@@ -1,7 +1,8 @@
 #pragma once
 float4 frag(PIO process, uint isFrontFace : SV_IsFrontFace) : SV_Target
 {
-applyHeight(process);
+	UNITY_SETUP_INSTANCE_ID(process);
+	applyHeight(process);
 	ApplyFeatureMap(process);
 	//get the uv coordinates and set the base color.
 	float4 color = tex2D(_MainTex, process.uv + process.uvOffset) * _Color;
@@ -23,6 +24,16 @@ applyHeight(process);
 	color = Contrast(color, _Contrast);
 	//apply contrast
 
+	if (_DetailLayer == 1) {
+		//is it terrain or grass?
+		float4 grassColor = tex2D(_DetailTex, process.detailUV + process.uvOffset) * _DetailColor;
+		grassColor = HSV(grassColor, _DetailHue, _DetailSaturation, _DetailValue);
+		test = saturate((process.worldPosition.y - _GrassHeight) *_FadeRange);
+		grassColor.a = lerp(0, grassColor.a, test);
+		color = lerp(color, grassColor, process.detail);
+	}
+
+
 	float4 baseColor = color; //for any alternative calculations.
 
 	if (_NormalScale > 0) {
@@ -36,35 +47,19 @@ applyHeight(process);
 	process = adjustProcess(process, isFrontFace);
 
 	#ifdef UNITY_PASS_FORWARDBASE
-		color = applyDetailLayer(process, color, 1-_DetailUnlit);
 
 		color = applyFresnel(process, color);
 		color = applySpecular(process, color);
 		color = applyLight(process, color);
 		color = applyReflectionProbe(color, process, _Smoothness, _Reflectiveness);
-
-		color = applyDetailLayer(process, color, _DetailUnlit);
 		
-		#if defined(LFRT)
-			baseColor = applyDetailLayer(process, baseColor, 1 - _DetailUnlit);
-			baseColor = applySpecular(process, baseColor);
-			baseColor = applyReflectionProbe(baseColor, process, _Smoothness, _Reflectiveness);
-			//just gets added like a foward add light.
-			color = applyLFRTColor(process, color, baseColor);
-		#endif
 		color = saturate(color);
 		color = applyGlow(process, color);
 	#else
-		color = applyDetailLayer(process, color, 1 - _DetailUnlit);
 
 		color = applySpecular(process, color);
 		color = applyLight(process, color);
 
-		//I'm still not quiet sure what would be the correct way to handle reflections with Forward add. For now, ommitting.
-		//color = applyReflectionProbe(color, process, _Smoothness, _Reflectiveness);
-		//color = lerp(color, 0, _Reflectiveness);
-
-		color = applyDetailLayerForward(process, color, _DetailUnlit);
 		color = saturate(color);
 		color = applyGlowForward(process, color);
 	#endif

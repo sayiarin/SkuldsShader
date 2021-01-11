@@ -21,6 +21,16 @@ float4 _Normal1_ST;
 float _Height1;
 float _Height2;
 float _Height3;
+float _GrassHeight;
+
+//Mask Layer Paramters
+int _DetailLayer;
+int _DetailUnlit; //OPTION IGNORED!
+
+float4 _DetailColor;
+float _DetailHue;
+float _DetailSaturation;
+float _DetailValue;
 #endif
 
 //general IO with Semantics
@@ -34,6 +44,7 @@ struct IO
 #if defined(LIGHTMAP_ON)
 	float2 lmuv : TEXCOORD1;
 #endif
+	UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
 //processed IO to be used by submethods
@@ -56,6 +67,7 @@ struct PIO
 	float3 binormal : TEXCOORD6; //also for bump mapping.
 	float vid : VERTEXID;
 	float attenuation : ATTENUATION;
+	UNITY_VERTEX_INPUT_INSTANCE_ID
 
 #if defined(VERTEXLIGHT_ON)
 	float3 vcolor : VCOLOR;
@@ -65,6 +77,9 @@ struct PIO
 #endif
 #if !defined(UNITY_PASS_SHADOWCASTER)
 	SHADOW_COORDS(7)
+#endif
+#if defined(TERRAIN)
+	fixed detail : DETAIL;
 #endif
 };
 
@@ -83,7 +98,6 @@ sampler2D _NormalTex;
 float4 _NormalTex_ST;
 sampler2D _GlowTex;
 float4 _GlowTex_ST;
-
 float4 _Color;
 float _TCut;
 
@@ -115,7 +129,9 @@ PIO adjustProcess(PIO process, uint isFrontFace)
 #include "toon.cginc"
 #include "vertexLights.cginc"
 #include "HSV.cginc"
+#if !defined(TERRAIN)
 #include "detailLayer.cginc"
+#endif
 #include "glow.cginc"
 #include "shadows.cginc"
 #if defined(LFRT)
@@ -128,6 +144,7 @@ PIO adjustProcess(PIO process, uint isFrontFace)
 #include "height.cginc"
 #include "vert.cginc"
 #if defined(TERRAIN)
+#include "terrainGeom.cginc"
 #include "terrainFrag.cginc"
 #else
 #include "frag.cginc"

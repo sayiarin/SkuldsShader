@@ -319,6 +319,10 @@ public class SkuldsShaderEditor : ShaderGUI
             CreatePopupFromProperty("Destination Blend:", "_DstBlend", typeof(UnityEngine.Rendering.BlendMode));
             CreatePopupFromProperty("Cull Mode:", "_CullMode", typeof(UnityEngine.Rendering.CullMode));
             bool zWrite = CreateToggleFromProperty("Enable Z-write:", "_ZWrite");
+            bool alpha = CreateToggleFromProperty("Enable Alpha To Mask:", "_AlphaToMask");
+
+            materialEditor.EnableInstancingField();
+            materialEditor.DoubleSidedGIField();
             materialEditor.RenderQueueField();
             EditorGUILayout.EndVertical();
         }

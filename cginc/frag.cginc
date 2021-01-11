@@ -1,6 +1,7 @@
 #pragma once
 float4 frag(PIO process, uint isFrontFace : SV_IsFrontFace) : SV_Target
 {
+	UNITY_SETUP_INSTANCE_ID(process);
 	applyHeight(process);
 	ApplyFeatureMap(process);
 	//get the uv coordinates and set the base color.
@@ -57,7 +58,7 @@ float4 frag(PIO process, uint isFrontFace : SV_IsFrontFace) : SV_Target
 	#endif
 
 	
-	if (_RenderType == 0) {
+	if (_RenderType == 0 || _RenderType == 2 ) {
 		color.a = 1;
 	}
 	else {

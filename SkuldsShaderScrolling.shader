@@ -1,26 +1,6 @@
-﻿Shader "Skuld's Shader/Terrain"
+﻿Shader "Skuld's Shader/Scrolling"
 {
 	Properties {
-		// Splat Map Control Texture
-		_FadeRange("Fade Range",float) = 0
- 
-		// Textures
-		_MainTex("Base Layer", 2D) = "white" {}
-		_Tex1("Layer 2 (R)", 2D) = "white" {}
-		_Tex2("Layer 3 (G)", 2D) = "white" {}
-		_Tex3("Layer 4 (B)", 2D) = "white" {}
-
-		// Normal Maps
-		[Normal] _NormalTex("Normal Map", 2D) = "bump" {}
-		[Normal] _Normal1("Normal 2 (R)", 2D) = "bump" {}
-		[Normal] _Normal2("Normal 3 (G)", 2D) = "bump" {}
-		[Normal] _Normal3("Normal 4 (B)", 2D) = "bump" {}
-
-		_Height1("Height 2",float) = 0
-		_Height2("Height 3",float) = 0
-		_Height3("Height 4",float) = 0
-		_GrassHeight("Grass Start Height",float) = 0
-		
 		[space]
 		_ShadeRange("Shade Range",Range(0,1)) = 0.5
 		_ShadeSoftness("Edge Softness", Range(0,1)) = 0.1
@@ -31,6 +11,7 @@
 		_FinalBrightness("Final Brightness",Range(0,5)) = 1
 
 		[space]
+		_MainTex("Base Layer", 2D) = "white" {}
 		[HDR]_Color("Base Color",Color) = (1,1,1,1)
 		_Hue("Hue",Range(-180,180)) = 0
 		_Saturation("Saturation",Range(-1,10)) = 0
@@ -38,15 +19,16 @@
 		_Contrast("Contrast",Range(0,10)) = 1
 
 		[space]//specular, normals, smoothness and normals (Needs Height)
+		[Normal] _NormalTex("Normal Map", 2D) = "bump" {}
 		_FeatureTex("Feature Map", 2D) = "white" {}
 		_NormalScale("Normal Amount", Range(0,1)) = 1.0
-		_FresnelColor("Fresnel Color", Color)=(0, 0, 0, 0)
+		[HDR]_FresnelColor("Fresnel Color", Color) = (0, 0, 0, 0)
 		_FresnelRetract("Fresnel Retract", Range(0,10)) = 1.5
-		_SpecularColor("Specular Color", Color) = (1, 1, 1, 1)
+		[HDR]_SpecularColor("Specular Color", Color) = (1, 1, 1, 1)
 		_Specular("Specular", Range(0,1)) = 0
 		_SpecularSize("Specular Size",Range(.001,1)) = .1
 		_SpecularReflection("Specular Reflection",Range(0,1)) = .5
-		_SpecularIgnoreAtten("Ignore Attenuation",Float) = 0.0
+		_SpecularIgnoreAtten("Specular Ignore Attenuation",Int) = 0
 		_Smoothness("Smoothness", Range(0,1)) = 0
 		_Reflectiveness("Reflectiveness",Range(0,1)) = 0
 		_Height("Height",Range(0,1)) = 0
@@ -82,7 +64,7 @@
 		_TCut("Transparent Cutout",Range(0,1)) = 1
 		_AlphaToMask("Alpha To Mask",Int) = 0
 	}
-	CustomEditor "SkuldsShaderTerrainEditor"
+	CustomEditor "SkuldsShaderEditor"
 
 	SubShader {
 		Tags { }//defined by Custom Editor now.
@@ -97,7 +79,7 @@
 
 		Pass {
 			Tags { "LightMode" = "ForwardBase"}
-			Name "Base"
+			Name "Toon Base"
 
 			CGPROGRAM
 			#include "UnityCG.cginc"
@@ -105,15 +87,15 @@
 			#include "AutoLight.cginc"
 			#include "UnityPBSLighting.cginc"
 
-			#pragma target 5.0
+			#pragma target 3.5
 			#pragma vertex vert
-			#pragma geometry geom
-			#pragma fragment frag
 			#pragma multi_compile_instancing
+			#pragma fragment frag
 			#pragma multi_compile _ SHADOWS_SCREEN
 			#pragma multi_compile _ VERTEXLIGHT_ON
 			#pragma multi_compile _ LIGHTMAP_ON
-			#define TERRAIN
+			
+			#define SCROLLING
 
 			#include "cginc/shared.cginc"
 
@@ -122,7 +104,7 @@
 		Pass {
 			Tags { "LightMode" = "ForwardAdd"}
 			Blend One One
-			Name  "Add"
+			Name "Toon Add"
 
 			CGPROGRAM
 			#include "UnityCG.cginc"
@@ -130,18 +112,17 @@
 			#include "AutoLight.cginc"
 			#include "UnityPBSLighting.cginc"
 
-			#pragma target 5.0
+			#pragma target 3.5
 			
 			#pragma vertex vert
-			#pragma geometry geom
 			#pragma fragment frag
 			
 			#pragma multi_compile_instancing
 			#pragma multi_compile_fwdadd_fullshadows
-			#define TERRAIN
+			#define SCROLLING
 
 			#include "cginc/shared.cginc"
-		
+
 			ENDCG
 		}
 		Pass {
@@ -153,15 +134,15 @@
 			#include "UnityLightingCommon.cginc"
 			#include "AutoLight.cginc"
 			#include "UnityPBSLighting.cginc"
+			#define SCROLLING
 
-			#pragma target 5.0
+			#pragma target 3.5
 			
 			#pragma vertex vert
 			#pragma fragment frag
 			
 			#pragma multi_compile_instancing
 			#pragma multi_compile_shadowcaster_fullshadows
-			#define TERRAIN
 
 			#include "cginc/shared.cginc"
 

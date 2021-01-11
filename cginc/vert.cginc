@@ -1,8 +1,15 @@
+// Upgrade NOTE: replaced 'defined SCROLLING' with 'defined (SCROLLING)'
+
 #pragma once
 PIO vert( IO v ){
 	PIO process;
+	UNITY_SETUP_INSTANCE_ID(v);
+	UNITY_TRANSFER_INSTANCE_ID(v, process);
 	process.pos = UnityObjectToClipPos(v.vertex);
 	process.normal = normalize(v.normal);
+	#if defined (SCROLLING)
+		v.uv.y += _Time.x/60;
+	#endif
 	process.uv = TRANSFORM_TEX(v.uv, _MainTex);
 	process.detailUV = TRANSFORM_TEX(v.uv, _DetailTex);
 	process.normalUV = TRANSFORM_TEX(v.uv, _NormalTex);

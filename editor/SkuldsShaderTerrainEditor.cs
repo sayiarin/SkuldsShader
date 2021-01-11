@@ -24,6 +24,8 @@ public class SkuldsShaderTerrainEditor : SkuldsShaderEditor
             EditorGUILayout.BeginVertical(EditorStyles.textArea);
             MaterialProperty fadeRange = FindProperty("_FadeRange", properties);
             materialEditor.FloatProperty(fadeRange, "Fade Range:");
+            MaterialProperty grassHeight = FindProperty("_GrassHeight", properties);
+            materialEditor.FloatProperty(grassHeight, "Grass Begin Height:");
 
             EditorGUILayout.BeginVertical(EditorStyles.textArea);
             EditorGUILayout.LabelField("Layer 0:", EditorStyles.boldLabel);

@@ -62,6 +62,7 @@
 		[Enum(UnityEngine.Rendering.CullMode)] _CullMode("Cull Mode", Int) = 2                     // "Back"
 		_ZWrite("Z-Write",Int) = 1
 		_TCut("Transparent Cutout",Range(0,1)) = 1
+		_AlphaToMask("Alpha To Mask",Int) = 0
 	}
 	CustomEditor "SkuldsShaderEditor"
 
@@ -74,6 +75,7 @@
 		Lighting Off
 		SeparateSpecular On
 		ZWrite [_ZWrite]
+		AlphaToMask[_AlphaToMask]
 
 		Pass {
 			Tags { "LightMode" = "ForwardBase"}
@@ -88,9 +90,11 @@
 			#pragma target 3.5
 			#pragma vertex vert
 			#pragma fragment frag
+			#pragma multi_compile_instancing
 			#pragma multi_compile _ SHADOWS_SCREEN
 			#pragma multi_compile _ VERTEXLIGHT_ON
 			#pragma multi_compile _ LIGHTMAP_ON
+			
 
 			#include "cginc/shared.cginc"
 
@@ -112,6 +116,7 @@
 			#pragma vertex vert
 			#pragma fragment frag
 			
+			#pragma multi_compile_instancing
 			#pragma multi_compile_fwdadd_fullshadows
 
 			#include "cginc/shared.cginc"
@@ -132,7 +137,8 @@
 			
 			#pragma vertex vert
 			#pragma fragment frag
-			
+
+			#pragma multi_compile_instancing
 			#pragma multi_compile_shadowcaster_fullshadows
 
 			#include "cginc/shared.cginc"
