@@ -9,6 +9,9 @@ void reformatVert(inout PIO vert) {
 #if defined(LIGHTMAP_ON)
 	vert.lmuv=float2(0,0);
 #endif
+#if !defined(UNITY_PASS_SHADOWCASTER)
+	TRANSFER_SHADOW(vert)
+#endif
 }
 
 void addTriangleAtVert(PIO vert, float4 center, inout TriangleStream<PIO> tristream,float o, float d) {

@@ -22,7 +22,7 @@ float4 applyLight(PIO process, float4 color) {
 		float brightness = ToonDot(direction, process.worldNormal, process.attenuation);
 	#endif
 #else
-	#if !defined(LIGHTMAP_ON)
+	#if !defined(LIGHTMAP_ON)//Hmm... this should probably be optional.
 
 		//Calculate light probes from foward base.
 		float3 ambientDirection = unity_SHAr.xyz + unity_SHAg.xyz + unity_SHAb.xyz; //do not normalize
@@ -50,6 +50,7 @@ float4 applyLight(PIO process, float4 color) {
 		output.rgb += lerp( color.rgb * lightmapCol, color.rgb, _ShadeMin);
 		output.rgb = max(0, output.rgb);
 		output.rgb *= _FinalBrightness;
+		output.rgb *= process.attenuation;
 	#else
 		//ambient color (lightprobes): 
 		float3 probeColor = ShadeSH9(float4(0, 0, 0, 1));
