@@ -9,7 +9,7 @@ float _GlowAmount;
 float _GlowDirection;
 
 //just to make sure there's no repeat code:
-float4 getGlowAmount(PIO process, float4 col, float mask ) {
+float4 getGlowAmount(PIO process, v2f fragin, float4 col, float mask ) {
 	float glowAmt = 1;
 	float d = _Time.x * _GlowSpeed;
 	switch (_GlowDirection) {
@@ -23,10 +23,10 @@ float4 getGlowAmount(PIO process, float4 col, float mask ) {
 		d += process.worldPosition.z * _GlowSqueeze;
 		break;
 	case 3:
-		d += process.uv.x * _GlowSqueeze;
+		d += fragin.uv.x * _GlowSqueeze;
 		break;
 	case 4:
-		d += process.uv.y * _GlowSqueeze;
+		d += fragin.uv.y * _GlowSqueeze;
 		break;
 	}
 	glowAmt = cos(d) * _GlowSharpness;
@@ -38,20 +38,20 @@ float4 getGlowAmount(PIO process, float4 col, float mask ) {
 	return glowAmt;
 }
 
-float4 applyGlowForward(PIO process, float4 col) {
+float4 applyGlowForward(PIO process, v2f fragin, float4 col) {
 	if (_Glow != 1) {
 		return col;
 	}
-	float4 mask = tex2D(_GlowTex, process.uv + process.uvOffset);
+	float4 mask = tex2D(_GlowTex, fragin.uv + process.uvOffset);
 
-	float glowAmt = getGlowAmount(process, col, mask.a);
+	float glowAmt = getGlowAmount(process, fragin, col, mask.a);
 
 	col.rgb *= 1 - glowAmt;
 
 	return col;
 }
 
-float4 applyGlow(PIO process, float4 col) {
+float4 applyGlow(PIO process, v2f fragin, float4 col) {
 	if (_Glow != 1) {
 		return col;
 	}
@@ -63,7 +63,7 @@ float4 applyGlow(PIO process, float4 col) {
 	}
 	glowCol *= _GlowColor.rgb;
 
-	float glowAmt = getGlowAmount(process, col, mask.a);
+	float glowAmt = getGlowAmount(process, fragin, col, mask.a);
 
 	col.rgb = lerp(col.rgb, glowCol, glowAmt);
 

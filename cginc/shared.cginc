@@ -47,27 +47,20 @@ struct IO
 	UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
+
 //processed IO to be used by submethods
-struct PIO
+//do not add things in here that do not need to be interporlated, 
+//and transferred from vert to frag. Smaller is better, unless graphically.
+//plus less means the terrain can do more.
+struct v2f
 {
 	float4 pos : SV_POSITION; //the Position relative to the screen
+	//this needs to be here, to carry along.
+	float4 objectPosition : POSITION2; //The position relative to the mesh origin. 
 	float3 normal : NORMAL; //The normal in screen space.
 	float2 uv : TEXCOORD0; //uv coordinates
-	float2 detailUV : DETAILUV;
-	float2 normalUV : NORMALUV;
-	float2 featureUV : FEATUREUV;
-	float2 glowUV : GLOWUV;
-	float2 uvOffset : PARALLAX;
-	float4 objectPosition : POSITION2; //The position relative to the mesh origin.
-	float3 worldPosition : TEXCOORD3; //the position relative to world origin.
-	float3 worldNormal : TEXCOORD2; //The normal in world space.
-	float3 viewDirection : TEXCOORD4; //The direction the camera is looking at the mesh.
 	float4 tangent : TEXCOORD5;//for bump mapping.
-	float4 worldTangent : TANGENT1;  //more bump mapping.
-	float3 binormal : TEXCOORD6; //also for bump mapping.
 	float vid : VERTEXID;
-	float attenuation : ATTENUATION;
-	UNITY_VERTEX_INPUT_INSTANCE_ID
 
 #if defined(VERTEXLIGHT_ON)
 	float3 vcolor : VCOLOR;
@@ -81,6 +74,22 @@ struct PIO
 #if defined(TERRAIN)
 	fixed detail : DETAIL;
 #endif
+};
+
+//processed IO to be used by submethods
+struct PIO
+{
+	float3 worldPosition : TEXCOORD3; //the position relative to world origin.
+	float3 viewDirection : TEXCOORD4; //The direction the camera is looking at the mesh.
+	float attenuation : ATTENUATION;
+	float2 detailUV : DETAILUV;
+	float2 normalUV : NORMALUV;
+	float2 featureUV : FEATUREUV;
+	float2 glowUV : GLOWUV;
+	float3 binormal : TEXCOORD6; //also for bump mapping.
+	float4 worldTangent : TANGENT1;  //more bump mapping.
+	float3 worldNormal : TEXCOORD2; //The normal in world space.
+	float2 uvOffset : PARALLAX;
 };
 
 int _RenderType;
@@ -110,20 +119,6 @@ sampler2D _CameraGBufferTexture4;
 //sampler2D _ShadowMapTexture;
 #endif
 
-PIO adjustProcess(PIO process, uint isFrontFace)
-{
-	if (!isFrontFace){
-		process.normal = -process.normal;
-		process.worldNormal = -process.worldNormal;
-	}
-	//get the camera position to calculate view direction and then get the direction from the camera to the pixel.
-	//This needs to be done both in vertex and frag shaders.
-	process.viewDirection = normalize(process.worldPosition - _WorldSpaceCameraPos.xyz);
-	UNITY_LIGHT_ATTENUATION(attenuation, process, process.worldPosition);
-	process.attenuation = attenuation;
-	return process;
-}
-
 #if !UNITY_PASS_SHADOWCASTER
 #include "featureMap.cginc"
 #include "toon.cginc"
@@ -143,6 +138,7 @@ PIO adjustProcess(PIO process, uint isFrontFace)
 #include "reflections.cginc"
 #include "height.cginc"
 #include "vert.cginc"
+#include "adjustProcess.cginc"
 #if defined(TERRAIN)
 #include "terrainGeom.cginc"
 #include "terrainFrag.cginc"

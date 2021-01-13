@@ -1,7 +1,7 @@
 #pragma once
-float3 cubemapReflection(float3 color, PIO o, float smooth, float ref)
+float3 cubemapReflection(PIO process, v2f fragin, float3 color, float smooth, float ref)
 {
-	float3 reflectDir = reflect(o.viewDirection, o.worldNormal);
+	float3 reflectDir = reflect(process.viewDirection, process.worldNormal);
 	Unity_GlossyEnvironmentData envData;
 	envData.roughness = 1 - smooth;
 	envData.reflUVW = normalize(reflectDir);
@@ -12,7 +12,7 @@ float3 cubemapReflection(float3 color, PIO o, float smooth, float ref)
 	UNITY_BRANCH
 		if (spec0interpolationStrength < 0.999)
 		{
-			envData.reflUVW = BoxProjection(reflectDir, o.worldPosition,
+			envData.reflUVW = BoxProjection(reflectDir, process.worldPosition,
 				unity_SpecCube1_ProbePosition,
 				unity_SpecCube1_BoxMin, unity_SpecCube1_BoxMax);
 			result = lerp(Unity_GlossyEnvironment(
@@ -38,9 +38,9 @@ float3 cubemapReflection(float3 color, PIO o, float smooth, float ref)
 	return result;
 }
 
-float4 applyReflectionProbe(float4 col, inout PIO i, float smooth, float ref) {
+float4 applyReflectionProbe(inout PIO process, inout v2f fragin, float4 col, float smooth, float ref) {
 	if (ref > 0.0f) {
-		col.rgb = cubemapReflection(col.rgb, i, smooth, ref);
+		col.rgb = cubemapReflection(process, fragin, col.rgb, smooth, ref);
 	}
 	return col;
 }

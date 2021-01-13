@@ -1,21 +1,20 @@
 #pragma once
-float4 frag(PIO process, uint isFrontFace : SV_IsFrontFace) : SV_Target
+float4 frag(v2f fragin, uint isFrontFace : SV_IsFrontFace) : SV_Target
 {
-	UNITY_SETUP_INSTANCE_ID(process);
-	applyHeight(process);
-	ApplyFeatureMap(process);
+	PIO process = createProcess(fragin, isFrontFace);
 	//get the uv coordinates and set the base color.
-	float4 color = tex2D(_MainTex, process.uv + process.uvOffset) * _Color;
+	float4 color = tex2D(_MainTex, fragin.uv + process.uvOffset) * _Color;
 
-	float4 nextCol = tex2D(_Tex1, process.uv + process.uvOffset);
+
+	float4 nextCol = tex2D(_Tex1, fragin.uv + process.uvOffset);
 	float test = saturate((process.worldPosition.y - _Height1) *_FadeRange);
 	color = lerp(color, nextCol, test);
 
-	nextCol = tex2D(_Tex2, process.uv + process.uvOffset);
+	nextCol = tex2D(_Tex2, fragin.uv + process.uvOffset);
 	test = saturate((process.worldPosition.y - _Height2) * _FadeRange);
 	color = lerp(color, nextCol, test);
 
-	nextCol = tex2D(_Tex3, process.uv + process.uvOffset);
+	nextCol = tex2D(_Tex3, fragin.uv + process.uvOffset);
 	test = saturate((process.worldPosition.y - _Height3) * _FadeRange);
 	color = lerp(color, nextCol, test);
 
@@ -26,42 +25,36 @@ float4 frag(PIO process, uint isFrontFace : SV_IsFrontFace) : SV_Target
 
 	if (_DetailLayer == 1) {
 		//is it terrain or grass?
-		float4 grassColor = tex2D(_DetailTex, process.detailUV + process.uvOffset) * _DetailColor;
+		float4 grassColor = tex2D(_DetailTex, fragin.uv + process.uvOffset) * _DetailColor;
 		grassColor = HSV(grassColor, _DetailHue, _DetailSaturation, _DetailValue);
 		test = saturate((process.worldPosition.y - _GrassHeight) *_FadeRange);
 		grassColor.a = lerp(0, grassColor.a, test);
-		color = lerp(color, grassColor, process.detail);
+		color = lerp(color, grassColor, fragin.detail);
 	}
 
-
-	float4 baseColor = color; //for any alternative calculations.
-
-	if (_NormalScale > 0) {
-		applyNormalMap(process);
-	}
-	
 	if (_RenderType == 2) {
 		clip(color.a - _TCut);
 	}
 
-	process = adjustProcess(process, isFrontFace);
+	float4 baseColor = color; //for any alternative calculations.
+	
 
 	#ifdef UNITY_PASS_FORWARDBASE
 
-		color = applyFresnel(process, color);
-		color = applySpecular(process, color);
-		color = applyLight(process, color);
-		color = applyReflectionProbe(color, process, _Smoothness, _Reflectiveness);
+		color = applyFresnel(process, fragin, color);
+		color = applySpecular(process, fragin, color);
+		color = applyLight(process, fragin, color);
+		color = applyReflectionProbe(process, fragin, color, _Smoothness, _Reflectiveness);
 		
 		color = saturate(color);
-		color = applyGlow(process, color);
+		color = applyGlow(process, fragin, color);
 	#else
 
-		color = applySpecular(process, color);
-		color = applyLight(process, color);
+		color = applySpecular(process, fragin, color);
+		color = applyLight(process, fragin, color);
 
 		color = saturate(color);
-		color = applyGlowForward(process, color);
+		color = applyGlowForward(process, fragin, color);
 	#endif
 
 	

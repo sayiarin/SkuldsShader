@@ -6,7 +6,7 @@ float _ERange;
 float _EBrightness;
 float4 _ESamples;
 
-float4 applyLFRTColor(PIO process, float4 color, float4 baseColor ) {
+float4 applyLFRTColor(PIO process, v2f fragin, float4 color, float4 baseColor ) {
 	float xstep = 1.0f / _ESamples.x;
 	float ystep = 1.0f / _ESamples.y;
 	float xstart = xstep / 2;

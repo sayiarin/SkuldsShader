@@ -5,7 +5,7 @@ float _Reflectiveness;
 float _Height;
 int _ReflectType;
 
-void ApplyFeatureMap(PIO process) {
+void ApplyFeatureMap(PIO process, v2f fragin) {
 	float4 features = tex2D(_FeatureTex, process.featureUV + process.uvOffset);
 	_Specular *= features.r;
 	_Smoothness *= features.g;

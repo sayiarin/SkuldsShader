@@ -5,7 +5,7 @@ float _SpecularSize;
 float _SpecularReflection;
 float _SpecularIgnoreAtten;
 
-float4 applyFresnel(PIO process, float4 inColor) {
+float4 applyFresnel(PIO process, v2f fragin, float4 inColor) {
 #if defined(UNITY_PASS_FORWARDADD)
 	//foward add lighting and details from pixel lights.
 	float3 direction = normalize(_WorldSpaceLightPos0.xyz - process.worldPosition.xyz);
@@ -41,9 +41,9 @@ float SpecDot(float3 lightDir, float3 reflectDir,float attenuation) {
 	return res;
 }
 
-float4 applySpecular(PIO o, float4 color) 
+float4 applySpecular(PIO process, v2f fragin, float4 color)
 {
-	float3 reflectDir = reflect(o.viewDirection, o.worldNormal);
+	float3 reflectDir = reflect(process.viewDirection, process.worldNormal);
 	float3 direction = float3(0, 0, 0);
 
 	//set the starting color from reflection
@@ -69,17 +69,17 @@ float4 applySpecular(PIO o, float4 color)
 	}
 	
 	#if defined(UNITY_PASS_FORWARDADD)
-		direction = -normalize(o.worldPosition.xyz - _WorldSpaceLightPos0.xyz);
+		direction = -normalize(process.worldPosition.xyz - _WorldSpaceLightPos0.xyz);
 	#else
 		direction = normalize(_WorldSpaceLightPos0.xyz);
 	#endif
 
 	//apply light colors
-	float d = SpecDot(direction, normalize(reflectDir), max(o.attenuation, _SpecularIgnoreAtten));
+	float d = SpecDot(direction, normalize(reflectDir), max(process.attenuation, _SpecularIgnoreAtten));
 	float3 lightColor = _LightColor0.rgb * d;
 	#if defined(UNITY_PASS_FORWARDBASE) && !defined(LIGHTMAP_ON)
 		float3 ambientDirection = normalize(unity_SHAr.xyz + unity_SHAg.xyz + unity_SHAb.xyz);
-		d = SpecDot(ambientDirection, normalize(reflectDir), max(o.attenuation, _SpecularIgnoreAtten));
+		d = SpecDot(ambientDirection, normalize(reflectDir), max(process.attenuation, _SpecularIgnoreAtten));
 		lightColor += max(0,ShadeSH9(float4(0, 0, 0, 1))) * d;
 	#endif
 

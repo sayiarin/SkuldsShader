@@ -1,7 +1,7 @@
 #pragma once
 //keep in mind to always add lights. But multiply the sum to the final color. 
 //This method applies ambient light from directional and lightprobes.
-float4 applyLight(PIO process, float4 color) {
+float4 applyLight(PIO process, v2f fragin, float4 color) {
 	float4 output = float4(0, 0, 0, 1);
 
 	/************************
@@ -45,7 +45,7 @@ float4 applyLight(PIO process, float4 color) {
 
 	//Keep in mind color is added, and any time it's added it's +(basecolor * light)
 	#if defined(LIGHTMAP_ON)
-		float3 lightmapCol = DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, process.lmuv));
+		float3 lightmapCol = DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, fragin.lmuv));
 		lightmapCol += _LMBrightness;
 		output.rgb += lerp( color.rgb * lightmapCol, color.rgb, _ShadeMin);
 		output.rgb = max(0, output.rgb);

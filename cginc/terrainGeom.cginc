@@ -1,11 +1,8 @@
 #pragma once
 #include "utils.rotate2.cginc"
-void reformatVert(inout PIO vert) {
+void reformatVert(inout v2f vert) {
 	vert.pos = UnityObjectToClipPos(vert.objectPosition);
-	vert.worldPosition = mul(unity_ObjectToWorld, vert.objectPosition).xyz;
-	vert.attenuation = 0;
 	vert.normal = float4(0, 1, 0, 1);
-	vert.worldNormal = normalize(UnityObjectToWorldNormal(vert.normal));
 #if defined(LIGHTMAP_ON)
 	vert.lmuv=float2(0,0);
 #endif
@@ -14,10 +11,10 @@ void reformatVert(inout PIO vert) {
 #endif
 }
 
-void addTriangleAtVert(PIO vert, float4 center, inout TriangleStream<PIO> tristream,float o, float d) {
-	PIO v1 = vert;
-	PIO v2 = vert;
-	PIO v3 = vert;
+void addTriangleAtVert(v2f vert, float4 center, inout TriangleStream<v2f> tristream,float o, float d) {
+	v2f v1 = vert;
+	v2f v2 = vert;
+	v2f v3 = vert;
 
 	float4 pos = lerp(center, vert.objectPosition, d);
 	v1.objectPosition = pos;
@@ -33,9 +30,9 @@ void addTriangleAtVert(PIO vert, float4 center, inout TriangleStream<PIO> tristr
 	v2.vid += .2f;
 	v3.vid += .3f;
 
-	v1.detailUV = float2(0, 0);
-	v2.detailUV = float2(1, 0);
-	v3.detailUV = float2(.5f, 1);
+	v1.uv = float2(0, 0);
+	v2.uv = float2(1, 0);
+	v3.uv = float2(.5f, 1);
 
 	v1.objectPosition.x -= 1.5f;
 	v2.objectPosition.x += 1.5f;
@@ -61,9 +58,9 @@ void addTriangleAtVert(PIO vert, float4 center, inout TriangleStream<PIO> tristr
 }
 
 [maxvertexcount(18)]
-void geom(triangle PIO input[3], inout TriangleStream<PIO> tristream) {
+void geom(triangle v2f input[3], inout TriangleStream<v2f> tristream) {
 	for (int i = 0; i < 3; i++) {
-		PIO vert = input[i];
+		v2f vert = input[i];
 		vert.detail = 0.0f;
 		tristream.Append(vert);
 	}

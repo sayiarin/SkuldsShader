@@ -10,7 +10,7 @@ float _DetailValue;
 
 
 //used by forward add to negate the light from hitting the unlit surface.
-float4 applyDetailLayerForward(PIO process, float4 inColor, int apply) {
+float4 applyDetailLayerForward(PIO process, v2f fragin, float4 inColor, int apply) {
 	if (_DetailLayer + apply != 2) {
 		return inColor;
 	}
@@ -20,7 +20,7 @@ float4 applyDetailLayerForward(PIO process, float4 inColor, int apply) {
 	return outColor;
 }
 
-float4 applyDetailLayer(PIO process, float4 inColor, int apply)
+float4 applyDetailLayer(PIO process, v2f fragin, float4 inColor, int apply)
 {
 	if (_DetailLayer + apply != 2) {
 		return inColor;
