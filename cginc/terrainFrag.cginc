@@ -23,7 +23,7 @@ float4 frag(v2f fragin, uint isFrontFace : SV_IsFrontFace) : SV_Target
 	color = Contrast(color, _Contrast);
 	//apply contrast
 
-	if (_DetailLayer == 1) {
+	if (_DetailLayer > 0) {
 		//is it terrain or grass?
 		float4 grassColor = tex2D(_DetailTex, fragin.uv + process.uvOffset) * _DetailColor;
 		grassColor = HSV(grassColor, _DetailHue, _DetailSaturation, _DetailValue);
@@ -40,7 +40,6 @@ float4 frag(v2f fragin, uint isFrontFace : SV_IsFrontFace) : SV_Target
 	
 
 	#ifdef UNITY_PASS_FORWARDBASE
-
 		color = applyFresnel(process, fragin, color);
 		color = applySpecular(process, fragin, color);
 		color = applyLight(process, fragin, color);

@@ -7,7 +7,9 @@ void reformatVert(inout v2f vert) {
 	vert.lmuv=float2(0,0);
 #endif
 #if !defined(UNITY_PASS_SHADOWCASTER)
-	TRANSFER_SHADOW(vert)
+	#if !defined(SHADOWS_DEPTH)
+		TRANSFER_SHADOW(vert)
+	#endif
 #endif
 }
 
@@ -37,6 +39,7 @@ void addTriangleAtVert(v2f vert, float4 center, inout TriangleStream<v2f> tristr
 	v1.objectPosition.x -= 1.5f;
 	v2.objectPosition.x += 1.5f;
 	v3.objectPosition.y += .5f;
+	v3.objectPosition.z += sin((_Time.y*.5f)+v3.objectPosition.z)*.2f;
 
 	v1.objectPosition -= pos;
 	v1.objectPosition.xz = rotate2(v1.objectPosition.xz, (vert.vid + o)*2);
@@ -57,7 +60,7 @@ void addTriangleAtVert(v2f vert, float4 center, inout TriangleStream<v2f> tristr
 	tristream.RestartStrip();
 }
 
-[maxvertexcount(18)]
+[maxvertexcount(33)]
 void geom(triangle v2f input[3], inout TriangleStream<v2f> tristream) {
 	for (int i = 0; i < 3; i++) {
 		v2f vert = input[i];
@@ -75,5 +78,12 @@ void geom(triangle v2f input[3], inout TriangleStream<v2f> tristream) {
 
 		addTriangleAtVert(input[0], center, tristream, 1.0f, .5f);
 		addTriangleAtVert(input[1], center, tristream, .6f, .7f);
+		addTriangleAtVert(input[2], center, tristream, .8f, .2f);
+
+		addTriangleAtVert(input[0], center, tristream, .3f, .8f);
+		addTriangleAtVert(input[1], center, tristream, .2f, .7f);
+		addTriangleAtVert(input[2], center, tristream, .1f, .9f);
+
+		addTriangleAtVert(input[0], center, tristream, .9f, 1.0f);
 	}
 }

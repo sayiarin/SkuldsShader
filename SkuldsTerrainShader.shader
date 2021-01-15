@@ -139,9 +139,8 @@
 			#pragma multi_compile_instancing
 			#pragma multi_compile_fwdadd_fullshadows
 			#define TERRAIN
-
 			#include "cginc/shared.cginc"
-		
+
 			ENDCG
 		}
 		Pass {
@@ -157,12 +156,14 @@
 			#pragma target 5.0
 			
 			#pragma vertex vert
-			#pragma fragment frag
+			#pragma geometry geom
+			#pragma fragment terrainFrag
 			
 			#pragma multi_compile_instancing
 			#pragma multi_compile_shadowcaster_fullshadows
 			#define TERRAIN
 
+			
 			#include "cginc/shared.cginc"
 
 			ENDCG

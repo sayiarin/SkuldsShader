@@ -120,32 +120,39 @@ sampler2D _CameraGBufferTexture4;
 #endif
 
 #if !UNITY_PASS_SHADOWCASTER
-#include "featureMap.cginc"
-#include "toon.cginc"
-#include "vertexLights.cginc"
-#include "HSV.cginc"
-#if !defined(TERRAIN)
-#include "detailLayer.cginc"
-#endif
-#include "glow.cginc"
-#include "shadows.cginc"
-#if defined(LFRT)
-#include "lfrt.cginc"
-#endif
-#include "light.cginc"
-#include "normals.cginc"
-#include "specular.cginc"
-#include "reflections.cginc"
-#include "height.cginc"
-#include "vert.cginc"
-#include "adjustProcess.cginc"
-#if defined(TERRAIN)
-#include "terrainGeom.cginc"
-#include "terrainFrag.cginc"
-#else
-#include "frag.cginc"
-#endif
+	#include "featureMap.cginc"
+	#include "toon.cginc"
+	#include "vertexLights.cginc"
+	#include "HSV.cginc"
+	#if !defined(TERRAIN)
+	#include "detailLayer.cginc"
+	#endif
+	#include "glow.cginc"
+	#include "shadows.cginc"
+	#if defined(LFRT)
+	#include "lfrt.cginc"
+	#endif
+	#include "light.cginc"
+	#include "normals.cginc"
+	#include "specular.cginc"
+	#include "reflections.cginc"
+	#include "height.cginc"
+	#include "vert.cginc"
+	#include "adjustProcess.cginc"
+	#if defined(TERRAIN)
+	#include "cginc/terrainGeom.cginc"
+	#include "terrainFrag.cginc"
+	#else
+	#include "frag.cginc"
+	#endif
 #else 
-#include "vert.cginc"
-#include "shadowFrag.cginc"
+	#include "featureMap.cginc"
+	#include"height.cginc"
+	#include "normals.cginc"
+	#include "adjustProcess.cginc"
+	#include "vert.cginc"
+	#include "shadowFrag.cginc"
+	#if defined(TERRAIN)
+	#include "cginc/terrainGeom.cginc"
+	#endif
 #endif

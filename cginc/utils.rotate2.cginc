@@ -1,3 +1,4 @@
+#pragma once
 float2 rotate2(float2 inCoords, float rot)
 {
 	float sinRot;

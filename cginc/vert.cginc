@@ -5,13 +5,16 @@ v2f vert( IO v ){
 	v2f output;
 	UNITY_SETUP_INSTANCE_ID(v);
 	UNITY_TRANSFER_INSTANCE_ID(v, output);
+#if defined(WINDY)
+	v.vertex.z += cos(_Time.y * .25f + v.vertex.z) * (v.vertex.y * v.vertex.y) * .001f;
+#endif
 	output.pos = UnityObjectToClipPos(v.vertex);
 	output.objectPosition = v.vertex;
 
 	output.normal = normalize(v.normal);
-	#if defined (SCROLLING)
-		v.uv.y += _Time.x/60;
-	#endif
+#if defined (SCROLLING)
+	v.uv.y += _Time.x/60;
+#endif
 	output.uv = v.uv;
 	
 	output.tangent = v.tangent;
@@ -34,7 +37,5 @@ v2f vert( IO v ){
 #if defined(LIGHTMAP_ON)
 	output.lmuv = v.lmuv.xy * unity_LightmapST.xy + unity_LightmapST.zw;
 #endif
-
-
 	return output;
 }
