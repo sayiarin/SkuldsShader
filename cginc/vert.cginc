@@ -13,7 +13,7 @@ v2f vert( IO v ){
 
 	output.normal = normalize(v.normal);
 #if defined (SCROLLING)
-	v.uv.y += _Time.x/60;
+	v.uv.y += _Time.x/480;
 #endif
 	output.uv = v.uv;
 	

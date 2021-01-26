@@ -25,7 +25,7 @@ public class SkuldsShaderTerrainEditor : SkuldsShaderEditor
             MaterialProperty fadeRange = FindProperty("_FadeRange", properties);
             materialEditor.FloatProperty(fadeRange, "Fade Range:");
             MaterialProperty grassHeight = FindProperty("_GrassHeight", properties);
-            materialEditor.FloatProperty(grassHeight, "Grass Begin Height:");
+            materialEditor.FloatProperty(grassHeight, "Grass Begin Height:");;
 
             EditorGUILayout.BeginVertical(EditorStyles.textArea);
             EditorGUILayout.LabelField("Layer 0:", EditorStyles.boldLabel);
@@ -34,6 +34,7 @@ public class SkuldsShaderTerrainEditor : SkuldsShaderEditor
             MaterialProperty basenormal = FindProperty("_NormalTex", properties);
             materialEditor.TextureProperty(basenormal, "normals:");
             EditorGUILayout.EndVertical();
+
             MaterialProperty[] height = new MaterialProperty[7];
             MaterialProperty[] tex = new MaterialProperty[7];
             MaterialProperty[] normal = new MaterialProperty[7];
@@ -54,6 +55,15 @@ public class SkuldsShaderTerrainEditor : SkuldsShaderEditor
 
                 EditorGUILayout.EndVertical();
             }
+
+            EditorGUILayout.BeginVertical(EditorStyles.textArea);
+            EditorGUILayout.LabelField("Pathways:", EditorStyles.boldLabel);
+            MaterialProperty pathwayTex = FindProperty("_GlowTex", properties);
+            materialEditor.TextureProperty(pathwayTex, "Path Way Texture:");
+            MaterialProperty pathwayMap = FindProperty("_FeatureTex", properties);
+            materialEditor.TextureProperty(pathwayMap, "Path Way Map:");
+            EditorGUILayout.EndVertical();
+
             EditorGUILayout.EndVertical();
         }
     }

@@ -20,7 +20,7 @@
 		_Height2("Height 3",float) = 0
 		_Height3("Height 4",float) = 0
 		_GrassHeight("Grass Start Height",float) = 0
-		
+
 		[space]
 		_ShadeRange("Shade Range",Range(0,1)) = 0.5
 		_ShadeSoftness("Edge Softness", Range(0,1)) = 0.1
@@ -38,7 +38,7 @@
 		_Contrast("Contrast",Range(0,10)) = 1
 
 		[space]//specular, normals, smoothness and normals (Needs Height)
-		_FeatureTex("Feature Map", 2D) = "white" {}
+		_FeatureTex("Feature Map", 2D) = "black" {}
 		_NormalScale("Normal Amount", Range(0,1)) = 1.0
 		_FresnelColor("Fresnel Color", Color)=(0, 0, 0, 0)
 		_FresnelRetract("Fresnel Retract", Range(0,10)) = 1.5
@@ -57,6 +57,7 @@
 		_DetailTex("Detail Layer", 2D) = "black" {}
 		[HDR]_DetailColor("Detail Color", Color) = (1, 1, 1, 1)
 		_DetailUnlit("Detail Unlit", Int) = 0
+		_DetailOcclusion("Use as Ambient Occlusion",Int) = 0
 
 		[space]
 		_Glow("Detail Glow", Int) = 0

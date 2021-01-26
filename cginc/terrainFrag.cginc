@@ -18,6 +18,10 @@ float4 frag(v2f fragin, uint isFrontFace : SV_IsFrontFace) : SV_Target
 	test = saturate((process.worldPosition.y - _Height3) * _FadeRange);
 	color = lerp(color, nextCol, test);
 
+	nextCol = tex2D(_GlowTex, fragin.uv);
+	float pathTest = tex2D(_FeatureTex, process.featureUV).r; //b+w only
+	color.rgb = lerp(color.rgb, nextCol.rgb, pathTest);
+
 	float finalAlpha = color.a;
 	color = HSV(color, _Hue, _Saturation, _Value);
 	color = Contrast(color, _Contrast);
@@ -46,14 +50,12 @@ float4 frag(v2f fragin, uint isFrontFace : SV_IsFrontFace) : SV_Target
 		color = applyReflectionProbe(process, fragin, color, _Smoothness, _Reflectiveness);
 		
 		color = saturate(color);
-		color = applyGlow(process, fragin, color);
 	#else
 
 		color = applySpecular(process, fragin, color);
 		color = applyLight(process, fragin, color);
 
 		color = saturate(color);
-		color = applyGlowForward(process, fragin, color);
 	#endif
 
 	

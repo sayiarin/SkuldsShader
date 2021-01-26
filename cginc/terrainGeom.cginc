@@ -8,7 +8,7 @@ void reformatVert(inout v2f vert) {
 #endif
 #if !defined(UNITY_PASS_SHADOWCASTER)
 	#if !defined(SHADOWS_DEPTH)
-		TRANSFER_SHADOW(vert)
+		//TRANSFER_SHADOW(vert)
 	#endif
 #endif
 }
@@ -23,6 +23,7 @@ void addTriangleAtVert(v2f vert, float4 center, inout TriangleStream<v2f> tristr
 	v2.objectPosition = pos;
 	v3.objectPosition = pos;
 
+	float pathTest = floor(1.0f - tex2Dlod(_FeatureTex, float4(vert.uv,0,0)).r + .5f);
 	v1.detail = 1.0f;
 	v2.detail = 1.0f;
 	v3.detail = 1.0f;
@@ -49,6 +50,10 @@ void addTriangleAtVert(v2f vert, float4 center, inout TriangleStream<v2f> tristr
 	v2.objectPosition.xz = rotate2(v2.objectPosition.xz, (vert.vid + o)*2);
 	v2.objectPosition += pos;
 
+	v1.objectPosition *= pathTest;
+	v2.objectPosition *= pathTest;
+	v3.objectPosition *= pathTest;
+
 	reformatVert(v1);
 	reformatVert(v2);
 	reformatVert(v3);
@@ -67,7 +72,9 @@ void geom(triangle v2f input[3], inout TriangleStream<v2f> tristream) {
 		vert.detail = 0.0f;
 		tristream.Append(vert);
 	}
-	if (_DetailLayer == 1) {
+	float worldPosition = mul(unity_ObjectToWorld, input[0].objectPosition);
+	float distance = length(worldPosition - _WorldSpaceCameraPos);
+	if (_DetailLayer == 1 ) {
 		tristream.RestartStrip();
 
 		float4 center = input[0].objectPosition + input[1].objectPosition + input[2].objectPosition;

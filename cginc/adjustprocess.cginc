@@ -14,8 +14,10 @@ PIO createProcess(inout v2f fragin, uint isFrontFace)
 	process.binormal = CreateBinormal(process.worldNormal, process.worldTangent.xyz, process.worldTangent.w);
 
 #if defined(TERRAIN)
+	process.featureUV = fragin.uv;
 	float2 ouv = TRANSFORM_TEX(fragin.uv, _MainTex);
 	fragin.uv = lerp(ouv, fragin.uv, fragin.detail);
+	
 #else
 	fragin.uv = TRANSFORM_TEX(fragin.uv, _MainTex); //must be done last.
 #endif

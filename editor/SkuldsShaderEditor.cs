@@ -192,6 +192,7 @@ public class SkuldsShaderEditor : ShaderGUI
             {
                 EditorGUILayout.BeginVertical(EditorStyles.textArea);
                 bool unlit = CreateToggleFromProperty("Unlit:", "_DetailUnlit");
+                bool occlusion = CreateToggleFromProperty("Use As Ambient Occlusion:", "_DetailOcclusion");
                 MaterialProperty tex = FindProperty("_DetailTex", properties);
                 materialEditor.TextureProperty(tex, "Texture:");
                 MaterialProperty color = FindProperty("_DetailColor", properties);

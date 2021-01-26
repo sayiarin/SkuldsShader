@@ -22,6 +22,7 @@ float _Height1;
 float _Height2;
 float _Height3;
 float _GrassHeight;
+float _GrassDistance;
 
 //Mask Layer Paramters
 int _DetailLayer;
@@ -61,6 +62,7 @@ struct v2f
 	float2 uv : TEXCOORD0; //uv coordinates
 	float4 tangent : TEXCOORD5;//for bump mapping.
 	float vid : VERTEXID;
+	float instanceID : INSTANCEID;
 
 #if defined(VERTEXLIGHT_ON)
 	float3 vcolor : VCOLOR;

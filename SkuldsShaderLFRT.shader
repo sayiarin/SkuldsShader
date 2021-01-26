@@ -39,6 +39,7 @@
 		_DetailTex("Detail Layer", 2D) = "black" {}
 		[HDR]_DetailColor("Detail Color", Color) = (1, 1, 1, 1)
 		_DetailUnlit("Detail Unlit", Int) = 0
+		_DetailOcclusion("Use as Ambient Occlusion",Int) = 0
 
 		[space]
 		_Glow("Detail Glow", Int) = 0
