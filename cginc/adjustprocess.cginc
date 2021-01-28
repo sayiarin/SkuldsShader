@@ -37,7 +37,9 @@ PIO createProcess(inout v2f fragin, uint isFrontFace)
 		applyNormalMap(process, fragin);
 	}
 	applyHeight(process, fragin);
+#if !defined(TERRAIN)
 	ApplyFeatureMap(process, fragin);
+#endif
 
 	return process;
 }

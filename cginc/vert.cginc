@@ -1,5 +1,3 @@
-// Upgrade NOTE: replaced 'defined SCROLLING' with 'defined (SCROLLING)'
-
 #pragma once
 v2f vert( IO v ){
 	v2f output;

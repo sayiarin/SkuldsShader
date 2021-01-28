@@ -1,66 +1,83 @@
 #pragma once
 #include "utils.rotate2.cginc"
-void reformatVert(inout v2f vert) {
-	vert.pos = UnityObjectToClipPos(vert.objectPosition);
-	vert.normal = float4(0, 1, 0, 1);
+void addTriangleAtVert(v2f v, float4 center, inout TriangleStream<v2f> tristream,float o, float d) {
+	IO v1;
+	IO v2;
+	IO v3;
+
+	/*
+	IO vertTest;
+	vertTest.vertex = v.objectPosition;
+	vertTest.normal = v.normal;
+	vertTest.uv = float2(0, 0);
+	vertTest.id = v.vid;
+	vertTest.tangent = v.tangent;
+	v2f vertTestB = vert(vertTest);
+	*/
+
+	v1.normal = float3(0, 1, 0);
+	v2.normal = float3(0, 1, 0);
+	v3.normal = float3(0, 1, 0);
+
+	v1.tangent = v.tangent;
+	v2.tangent = v.tangent;
+	v3.tangent = v.tangent;
+
 #if defined(LIGHTMAP_ON)
-	vert.lmuv=float2(0,0);
+	v1.lmuv = v.lmuv;
+	v2.lmuv = v.lmuv;
+	v3.lmuv = v.lmuv;
 #endif
-#if !defined(UNITY_PASS_SHADOWCASTER)
-	#if !defined(SHADOWS_DEPTH)
-		//TRANSFER_SHADOW(vert)
-	#endif
-#endif
-}
 
-void addTriangleAtVert(v2f vert, float4 center, inout TriangleStream<v2f> tristream,float o, float d) {
-	v2f v1 = vert;
-	v2f v2 = vert;
-	v2f v3 = vert;
+	float4 pos = lerp(center, v.objectPosition, d);
+	v1.vertex = pos;
+	v2.vertex = pos;
+	v3.vertex = pos;
 
-	float4 pos = lerp(center, vert.objectPosition, d);
-	v1.objectPosition = pos;
-	v2.objectPosition = pos;
-	v3.objectPosition = pos;
-
-	float pathTest = floor(1.0f - tex2Dlod(_FeatureTex, float4(vert.uv,0,0)).r + .5f);
-	v1.detail = 1.0f;
-	v2.detail = 1.0f;
-	v3.detail = 1.0f;
+	float pathTest = floor(1.0f - tex2Dlod(_FeatureTex, float4(v.uv,0,0)).r + .5f);
 
 	//just so we know what it spawned from and which one it is internally.
-	v1.vid += .1f;
-	v2.vid += .2f;
-	v3.vid += .3f;
+	v1.id = v.vid + .1f;
+	v2.id = v.vid + .2f;
+	v3.id = v.vid + .3f;
 
 	v1.uv = float2(0, 0);
 	v2.uv = float2(1, 0);
 	v3.uv = float2(.5f, 1);
 
-	v1.objectPosition.x -= 1.5f;
-	v2.objectPosition.x += 1.5f;
-	v3.objectPosition.y += .5f;
-	v3.objectPosition.z += sin((_Time.y*.5f)+v3.objectPosition.z)*.2f;
+	v1.vertex.x -= 1.5f;
+	v2.vertex.x += 1.5f;
+	v3.vertex.y += .5f;
+	v3.vertex.z += sin((_Time.y*.5f)+v3.vertex.z)*.2f;
 
-	v1.objectPosition -= pos;
-	v1.objectPosition.xz = rotate2(v1.objectPosition.xz, (vert.vid + o)*2);
-	v1.objectPosition += pos;
+	v1.vertex -= pos;
+	v1.vertex.xz = rotate2(v1.vertex.xz, (v.vid + o)*2);
+	v1.vertex += pos;
 
-	v2.objectPosition -= pos;
-	v2.objectPosition.xz = rotate2(v2.objectPosition.xz, (vert.vid + o)*2);
-	v2.objectPosition += pos;
+	v2.vertex -= pos;
+	v2.vertex.xz = rotate2(v2.vertex.xz, (v.vid + o)*2);
+	v2.vertex += pos;
 
-	v1.objectPosition *= pathTest;
-	v2.objectPosition *= pathTest;
-	v3.objectPosition *= pathTest;
+	v1.vertex *= pathTest;
+	v2.vertex *= pathTest;
+	v3.vertex *= pathTest;
 
-	reformatVert(v1);
-	reformatVert(v2);
-	reformatVert(v3);
+	//just reprocess the fricken vert as if passed in from CPU.
+	v2f v1frag = vert(v1);
+	v2f v2frag = vert(v2);
+	v2f v3frag = vert(v3);
 
-	tristream.Append(v1);
-	tristream.Append(v2);
-	tristream.Append(v3);
+	v1frag.instanceID = v1.id;
+	v2frag.instanceID = v2.id;
+	v3frag.instanceID = v3.id;
+
+	v1frag.detail = 1.0f;
+	v2frag.detail = 1.0f;
+	v3frag.detail = 1.0f;
+
+	tristream.Append(v1frag);
+	tristream.Append(v2frag);
+	tristream.Append(v3frag);
 
 	tristream.RestartStrip();
 }

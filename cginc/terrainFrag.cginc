@@ -3,7 +3,7 @@ float4 frag(v2f fragin, uint isFrontFace : SV_IsFrontFace) : SV_Target
 {
 	PIO process = createProcess(fragin, isFrontFace);
 	//get the uv coordinates and set the base color.
-	float4 color = tex2D(_MainTex, fragin.uv + process.uvOffset) * _Color;
+	float4 color = tex2D(_MainTex, fragin.uv + process.uvOffset);
 
 
 	float4 nextCol = tex2D(_Tex1, fragin.uv + process.uvOffset);
@@ -19,10 +19,11 @@ float4 frag(v2f fragin, uint isFrontFace : SV_IsFrontFace) : SV_Target
 	color = lerp(color, nextCol, test);
 
 	nextCol = tex2D(_GlowTex, fragin.uv);
-	float pathTest = tex2D(_FeatureTex, process.featureUV).r; //b+w only
+	float pathTest = tex2D(_FeatureTex, process.featureUV).r * nextCol.a; //b+w only
 	color.rgb = lerp(color.rgb, nextCol.rgb, pathTest);
 
 	float finalAlpha = color.a;
+	color *= _Color;
 	color = HSV(color, _Hue, _Saturation, _Value);
 	color = Contrast(color, _Contrast);
 	//apply contrast
@@ -44,7 +45,6 @@ float4 frag(v2f fragin, uint isFrontFace : SV_IsFrontFace) : SV_Target
 	
 
 	#ifdef UNITY_PASS_FORWARDBASE
-		color = applyFresnel(process, fragin, color);
 		color = applySpecular(process, fragin, color);
 		color = applyLight(process, fragin, color);
 		color = applyReflectionProbe(process, fragin, color, _Smoothness, _Reflectiveness);
