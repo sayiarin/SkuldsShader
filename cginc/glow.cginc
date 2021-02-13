@@ -9,7 +9,7 @@ float _GlowAmount;
 float _GlowDirection;
 
 //just to make sure there's no repeat code:
-float4 getGlowAmount(PIO process, v2f fragin, float4 col, float mask ) {
+float4 getGlowAmount(PIO process, v2f fragin, float mask ) {
 	float glowAmt = 1;
 	float d = _Time.x * _GlowSpeed;
 	switch (_GlowDirection) {
@@ -44,7 +44,7 @@ float4 applyGlowForward(PIO process, v2f fragin, float4 col) {
 	}
 	float4 mask = tex2D(_GlowTex, fragin.uv + process.uvOffset);
 
-	float glowAmt = getGlowAmount(process, fragin, col, mask.a);
+	float glowAmt = getGlowAmount(process, fragin, mask.a);
 
 	col.rgb *= 1 - glowAmt;
 
@@ -63,8 +63,8 @@ float4 applyGlow(PIO process, v2f fragin, float4 col) {
 	}
 	glowCol *= _GlowColor.rgb;
 
-	float glowAmt = getGlowAmount(process, fragin, col, mask.a);
-
+	float glowAmt = getGlowAmount(process, fragin, mask.a);
+	glowAmt *= mask.a;
 	col.rgb = lerp(col.rgb, glowCol, glowAmt);
 
 	return col;
