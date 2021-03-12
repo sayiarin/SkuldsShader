@@ -22,7 +22,7 @@ float4 applyDetailLayerForward(PIO process, v2f fragin, float4 inColor, int appl
 		outColor = inColor * maskColor;
 	}
 	else {
-		outColor *= 1 - (maskColor.a * _DetailColor.a);
+		outColor *= 1 - saturate(maskColor.a * _DetailColor.a);
 	}
 	return outColor;
 }
@@ -41,7 +41,7 @@ float4 applyDetailLayer(PIO process, v2f fragin, float4 inColor, int apply)
 		outColor = inColor * maskColor;
 	}
 	else {
-		outColor.rgb = lerp(outColor.rgb, maskColor.rgb, maskColor.a);
+		outColor.rgb = lerp(outColor.rgb, maskColor.rgb, saturate(maskColor.a));
 	}
 	return outColor;
 }
