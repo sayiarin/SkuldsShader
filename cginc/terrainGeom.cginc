@@ -83,17 +83,29 @@ void addTriangleAtVert(v2f v, float4 center, inout TriangleStream<v2f> tristream
 }
 
 [maxvertexcount(33)]
-void geom(triangle v2f input[3], inout TriangleStream<v2f> tristream) {
+void geom(triangle v2f input[3], inout TriangleStream<v2f> tristream) 
+{
+	float4 worldPosition = mul(unity_ObjectToWorld, input[0].objectPosition);
+	float distance = length(worldPosition - _WorldSpaceCameraPos);
+
+	UNITY_BRANCH
+	if (distance > _ClipDistance) {
+		return;
+	}
+
+	UNITY_UNROLL
 	for (int i = 0; i < 3; i++) {
 		v2f vert = input[i];
 		vert.detail = 0.0f;
 		tristream.Append(vert);
 	}
-	float worldPosition = mul(unity_ObjectToWorld, input[0].objectPosition);
-	float distance = length(worldPosition - _WorldSpaceCameraPos);
-	if (_DetailLayer == 1 ) {
-		tristream.RestartStrip();
+	tristream.RestartStrip();
 
+	UNITY_BRANCH
+	if (distance > _GrassDistance) {
+		return;
+	}
+	if (_DetailLayer == 1) {
 		float4 center = input[0].objectPosition + input[1].objectPosition + input[2].objectPosition;
 		center /= 3.0f;
 		addTriangleAtVert(input[0], center, tristream, 0, 0);
@@ -110,4 +122,5 @@ void geom(triangle v2f input[3], inout TriangleStream<v2f> tristream) {
 
 		addTriangleAtVert(input[0], center, tristream, .9f, 1.0f);
 	}
+	tristream.RestartStrip();
 }
