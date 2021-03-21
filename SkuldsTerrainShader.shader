@@ -20,6 +20,8 @@
 		_Height2("Height 3",float) = 0
 		_Height3("Height 4",float) = 0
 		_GrassHeight("Grass Start Height",float) = 0
+		_GrassDistance("Grass Distance",float) = 100
+		_ClipDistance("Clip Distance",float) = 200
 
 		[space]
 		_ShadeRange("Shade Range",Range(0,1)) = 0.5
