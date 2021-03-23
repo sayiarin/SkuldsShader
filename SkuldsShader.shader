@@ -51,6 +51,7 @@
 		_GlowSharpness("Glow Sharpness",float) = 1.0
 		_GlowDirection("Glow Direction",Int) = 4
 		_GlowRainbow("Rainbow Effect", Int) = 0
+		_GlowDirect("Direct Light Control", Int) = 0
 
 		_DetailHue("Hue",Range(-180,180)) = 0
 		_DetailSaturation("Saturation",Range(-1,10)) = 1
