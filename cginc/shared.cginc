@@ -23,6 +23,7 @@ float _Height2;
 float _Height3;
 float _GrassHeight;
 float _GrassDistance;
+float _ClipDistance;
 
 //Mask Layer Paramters
 int _DetailLayer;

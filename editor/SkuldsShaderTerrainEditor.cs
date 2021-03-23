@@ -179,7 +179,6 @@ public class SkuldsShaderTerrainEditor : ShaderGUI
 
 
 
-
     bool DetailGroup = false;
     void GrassOptions()
     {
@@ -202,6 +201,8 @@ public class SkuldsShaderTerrainEditor : ShaderGUI
                 materialEditor.RangeProperty(saturation, "Saturation:");
                 MaterialProperty value = FindProperty("_DetailValue", properties);
                 materialEditor.RangeProperty(value, "Value:");
+                MaterialProperty grassDistance = FindProperty("_GrassDistance", properties);
+                materialEditor.FloatProperty(grassDistance, "Grass Distance:");
                 EditorGUILayout.EndVertical();
             }
         }
@@ -361,6 +362,8 @@ public class SkuldsShaderTerrainEditor : ShaderGUI
         if (TerrainGroup)
         {
             EditorGUILayout.BeginVertical(EditorStyles.textArea);
+            MaterialProperty clipDistance = FindProperty("_ClipDistance", properties);
+            materialEditor.FloatProperty(clipDistance, "Clip Distance:");
             MaterialProperty fadeRange = FindProperty("_FadeRange", properties);
             materialEditor.FloatProperty(fadeRange, "Fade Range:");
             MaterialProperty grassHeight = FindProperty("_GrassHeight", properties);

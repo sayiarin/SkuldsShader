@@ -29,15 +29,29 @@ float4 applyFresnel(PIO process, v2f fragin, float4 inColor) {
 	return inColor;
 }
 
-float SpecDot(float3 lightDir, float3 reflectDir,float attenuation) {
+float SpecDot(float3 lightDir, float3 reflectDir, float attenuation) {
 	float res = dot(lightDir, reflectDir);
+	//apply size
 	res -= 1 - _SpecularSize;
 	res *= 1 / _SpecularSize;
 	res = min(_ShadeMax, res);
 	res = max(0, res);
 	res *= res; //should behave similar to light attenuation. So make it quadratic.
-	res *= _Specular;//apply effect amount.
 	res *= attenuation;
+	
+	float e = res - _ShadePivot;
+	if (_ShadeSoftness > 0) {
+		e *= 1 / _ShadeSoftness;
+		e -= _ShadePivot;
+		e = saturate(e); //0 to 1.
+	}
+	else {
+		e = saturate(floor(e + 1));//0 or 1.
+	}
+	res = e;
+
+	//apply effect amount.
+	res *= _Specular;
 	return res;
 }
 
