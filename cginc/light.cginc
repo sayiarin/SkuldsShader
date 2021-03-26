@@ -25,8 +25,7 @@ float4 applyLight(PIO process, v2f fragin, float4 color) {
 	//Calculate light probes from foward base.
 	#if defined(LIGHTMAP_ON)
 		float3 ambientDirection = normalize(UnityObjectToWorldNormal(fragin.normal).xyz);
-		float lpbrightness = dot(ambientDirection, process.worldNormal.xyz);
-		lpbrightness -= 2.5;
+		float lpbrightness = -1.5;
 		float2 nm = tex2D(_NormalTex, process.normalUV + process.uvOffset).rg;
 		lpbrightness += nm.r;
 		lpbrightness += nm.g;
