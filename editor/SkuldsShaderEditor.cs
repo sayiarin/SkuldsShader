@@ -268,6 +268,10 @@ public class SkuldsShaderEditor : ShaderGUI
             materialEditor.RangeProperty(lmb, "Light Map Brightness Adjustment:");
             MaterialProperty lmfb = FindProperty("_FinalBrightness", properties);
             materialEditor.RangeProperty(lmfb, "Final Brightness Multiplier:");
+            MaterialProperty lmpa = FindProperty("_LMProbeAmount", properties);
+            materialEditor.RangeProperty(lmpa, "Normal Emulation Amount:");
+            MaterialProperty lmda = FindProperty("_LMDirectAmount", properties);
+            materialEditor.RangeProperty(lmda, "Light Direct Light Affect Amount:");
             EditorGUILayout.EndVertical();
         }
     }

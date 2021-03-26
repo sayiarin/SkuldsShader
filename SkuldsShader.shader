@@ -9,6 +9,8 @@
 		_ShadeMin("Min Brightness",Range(0,1)) = 0.0
 		_LMBrightness("Added Lightmap Brightness", Range(-1,1)) = 0
 		_FinalBrightness("Final Brightness",Range(0,5)) = 1
+		_LMProbeAmount("LM Normal Emulation",Range(0,1)) = 0
+		_LMDirectAmount("Direct Light Amount with Light Maps",Range(0,1)) = 0
 
 		[space]
 		_MainTex("Base Layer", 2D) = "white" {}
