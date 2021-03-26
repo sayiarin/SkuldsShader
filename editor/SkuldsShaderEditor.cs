@@ -229,19 +229,23 @@ public class SkuldsShaderEditor : ShaderGUI
                 MaterialProperty glowColor = FindProperty("_GlowColor", properties);
                 materialEditor.ColorProperty(glowColor, "Color:");
                 CreateToggleFromProperty("Rainbow Effect:", "_GlowRainbow");
-                MaterialProperty glowSpeed = FindProperty("_GlowSpeed", properties);
-                materialEditor.FloatProperty(glowSpeed, "Speed:");
-                MaterialProperty glowSqueeze = FindProperty("_GlowSqueeze", properties);
-                materialEditor.FloatProperty(glowSqueeze, "Squeeze:");
-                MaterialProperty glowSharpness = FindProperty("_GlowSharpness", properties);
-                materialEditor.FloatProperty(glowSharpness, "Sharpness:");
+                bool dlcontrol = CreateToggleFromProperty("Use Direct Light to Control (Club Aes):", "_GlowDirect");
+                if (!dlcontrol)
+                {
+                    MaterialProperty glowSpeed = FindProperty("_GlowSpeed", properties);
+                    materialEditor.FloatProperty(glowSpeed, "Speed:");
+                    MaterialProperty glowSqueeze = FindProperty("_GlowSqueeze", properties);
+                    materialEditor.FloatProperty(glowSqueeze, "Squeeze:");
+                    MaterialProperty glowSharpness = FindProperty("_GlowSharpness", properties);
+                    materialEditor.FloatProperty(glowSharpness, "Sharpness:");
+                }
                 EditorGUILayout.EndVertical();
             }
         }
     }
 
 
-        bool lightGroup = false;
+    bool lightGroup = false;
     void LightOptions()
     {
 
