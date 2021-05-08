@@ -103,8 +103,8 @@ float _LMProbeAmount;
 float _LMDirectAmount;
 
 //Base Layer paramters
-sampler2D _MainTex;
-float4 _MainTex_ST;
+sampler2D _BaseTexture;
+float4 _BaseTexture_ST;
 sampler2D _DetailTex;
 float4 _DetailTex_ST;
 sampler2D _FeatureTex;

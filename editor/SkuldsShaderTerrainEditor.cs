@@ -371,7 +371,7 @@ public class SkuldsShaderTerrainEditor : ShaderGUI
 
             EditorGUILayout.BeginVertical(EditorStyles.textArea);
             EditorGUILayout.LabelField("Layer 0:", EditorStyles.boldLabel);
-            MaterialProperty basetex = FindProperty("_MainTex", properties);
+            MaterialProperty basetex = FindProperty("_BaseTexture", properties);
             materialEditor.TextureProperty(basetex, "texture:");
             MaterialProperty basenormal = FindProperty("_NormalTex", properties);
             materialEditor.TextureProperty(basenormal, "normals:");

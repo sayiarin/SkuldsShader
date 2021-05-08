@@ -7,6 +7,7 @@ float _GlowSharpness;
 int _GlowRainbow;
 float _GlowAmount;
 float _GlowDirection;
+float _GlowColourShiftSpeed;
 int _GlowDirect;
 
 //just to make sure there's no repeat code:
@@ -60,11 +61,11 @@ float4 applyGlow(PIO process, v2f fragin, float4 col) {
 
 	float3 glowCol = mask.rgb;
 	if (_GlowRainbow == 1) {
-		glowCol *= shiftColor(float3(1, 0, 0), _Time.y * 360);
+		glowCol *= shiftColor(float3(1, 0, 0), _Time.y * _GlowColourShiftSpeed * 360);
 	}
 	glowCol *= _GlowColor.rgb;
 
-	if (_GlowDirect < 1) {
+	if(_GlowDirect != 1) {
 		float glowAmt = getGlowAmount(process, fragin, mask.a);
 		glowAmt *= mask.a;
 		col.rgb = lerp(col.rgb, glowCol, glowAmt);

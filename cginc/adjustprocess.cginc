@@ -15,11 +15,11 @@ PIO createProcess(inout v2f fragin, uint isFrontFace)
 
 #if defined(TERRAIN)
 	process.featureUV = fragin.uv;
-	float2 ouv = TRANSFORM_TEX(fragin.uv, _MainTex);
+	float2 ouv = TRANSFORM_TEX(fragin.uv, _BaseTexture);
 	fragin.uv = lerp(ouv, fragin.uv, fragin.detail);
 	
 #else
-	fragin.uv = TRANSFORM_TEX(fragin.uv, _MainTex); //must be done last.
+	fragin.uv = TRANSFORM_TEX(fragin.uv, _BaseTexture); //must be done last.
 #endif
 
 	if (!isFrontFace) {

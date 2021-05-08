@@ -13,7 +13,9 @@
 		_LMDirectAmount("Direct Light Amount with Light Maps",Range(0,1)) = 0
 
 		[space]
-		_MainTex("Base Layer", 2D) = "white" {}
+		// _MainTex variable will be used by the Diffuse Fallback Shader
+		_MainTex("Fallback Texture", 2D) = "white" {}
+		_BaseTexture("Base Layer", 2D) = "white" {}
 		[HDR]_Color("Base Color",Color) = (1,1,1,1)
 		_Hue("Hue",Range(-180,180)) = 0
 		_Saturation("Saturation",Range(-1,10)) = 0
@@ -52,6 +54,7 @@
 		_GlowSqueeze("Glow Squeeze",float) = 10.0
 		_GlowSharpness("Glow Sharpness",float) = 1.0
 		_GlowDirection("Glow Direction",Int) = 4
+		_GlowColourShiftSpeed("Glow Colour Shift Speed", float) = 1.0
 		_GlowRainbow("Rainbow Effect", Int) = 0
 		_GlowDirect("Direct Light Control", Int) = 0
 

@@ -11,7 +11,7 @@
 		_FinalBrightness("Final Brightness",Range(0,5)) = 1
 
 		[space]
-		_MainTex("Base Layer", 2D) = "white" {}
+		_BaseTexture("Base Layer", 2D) = "white" {}
 		[HDR]_Color("Base Color",Color) = (1,1,1,1)
 		_Hue("Hue",Range(-180,180)) = 0
 		_Saturation("Saturation",Range(-1,10)) = 0
@@ -154,6 +154,7 @@
 
 			ENDCG
 		}
+
 		Pass
 		{
 			Name "META"

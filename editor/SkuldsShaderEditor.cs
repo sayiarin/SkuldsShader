@@ -228,24 +228,24 @@ public class SkuldsShaderEditor : ShaderGUI
                 CreatePopupFromProperty("Glow Direction:", "_GlowDirection", typeof(GlowDirection));
                 MaterialProperty glowColor = FindProperty("_GlowColor", properties);
                 materialEditor.ColorProperty(glowColor, "Color:");
+                CreateToggleFromProperty("Glow Brightness affected by Direct Light:", "_GlowDirect");
                 CreateToggleFromProperty("Rainbow Effect:", "_GlowRainbow");
-                bool dlcontrol = CreateToggleFromProperty("Use Direct Light to Control (Club Aes):", "_GlowDirect");
-                if (!dlcontrol)
-                {
-                    MaterialProperty glowSpeed = FindProperty("_GlowSpeed", properties);
-                    materialEditor.FloatProperty(glowSpeed, "Speed:");
-                    MaterialProperty glowSqueeze = FindProperty("_GlowSqueeze", properties);
-                    materialEditor.FloatProperty(glowSqueeze, "Squeeze:");
-                    MaterialProperty glowSharpness = FindProperty("_GlowSharpness", properties);
-                    materialEditor.FloatProperty(glowSharpness, "Sharpness:");
-                }
+                MaterialProperty glowSpeed = FindProperty("_GlowSpeed", properties);
+                materialEditor.FloatProperty(glowSpeed, "Speed:");
+                MaterialProperty glowSqueeze = FindProperty("_GlowSqueeze", properties);
+                materialEditor.FloatProperty(glowSqueeze, "Squeeze:");
+                MaterialProperty glowSharpness = FindProperty("_GlowSharpness", properties);
+                materialEditor.FloatProperty(glowSharpness, "Sharpness:");
+                MaterialProperty glowColourShiftSpeed = FindProperty("_GlowColourShiftSpeed", properties);
+                materialEditor.FloatProperty(glowColourShiftSpeed, "Glow Colour Shift Speed:");
+
                 EditorGUILayout.EndVertical();
             }
         }
     }
 
 
-    bool lightGroup = false;
+        bool lightGroup = false;
     void LightOptions()
     {
 
@@ -289,8 +289,10 @@ public class SkuldsShaderEditor : ShaderGUI
         if (baseGroup)
         {
             EditorGUILayout.BeginVertical(EditorStyles.textArea);
-            MaterialProperty tex = FindProperty("_MainTex", properties);
-            materialEditor.TextureProperty(tex, "Texture:");
+            MaterialProperty fallbackTexture = FindProperty("_MainTex", properties);
+            materialEditor.TextureProperty(fallbackTexture, "Fallback Texture:");
+            MaterialProperty mainTexture = FindProperty("_BaseTexture", properties);
+            materialEditor.TextureProperty(mainTexture, "Main Texture:");
             MaterialProperty color = FindProperty("_Color", properties);
             materialEditor.ColorProperty(color, "Color:");
             MaterialProperty hue = FindProperty("_Hue", properties);

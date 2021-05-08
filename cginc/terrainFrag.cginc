@@ -3,7 +3,7 @@ float4 frag(v2f fragin, uint isFrontFace : SV_IsFrontFace) : SV_Target
 {
 	PIO process = createProcess(fragin, isFrontFace);
 	//get the uv coordinates and set the base color.
-	float4 color = tex2D(_MainTex, fragin.uv + process.uvOffset);
+	float4 color = tex2D(_BaseTexture, fragin.uv + process.uvOffset);
 
 
 	float4 nextCol = tex2D(_Tex1, fragin.uv + process.uvOffset);

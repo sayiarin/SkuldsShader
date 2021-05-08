@@ -5,7 +5,7 @@
 		_FadeRange("Fade Range",float) = 0
  
 		// Textures
-		_MainTex("Base Layer", 2D) = "white" {}
+		_BaseTexture("Base Layer", 2D) = "white" {}
 		_Tex1("Layer 2 (R)", 2D) = "white" {}
 		_Tex2("Layer 3 (G)", 2D) = "white" {}
 		_Tex3("Layer 4 (B)", 2D) = "white" {}
