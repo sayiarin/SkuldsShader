@@ -98,6 +98,9 @@ struct PIO
 int _RenderType;
 float _LMBrightness;
 float _FinalBrightness;
+//Because only ambient is passed in, the lightdir will be based on dot(normal,normalMapNormal)
+float _LMProbeAmount;
+float _LMDirectAmount;
 
 //Base Layer paramters
 sampler2D _MainTex;
@@ -150,7 +153,7 @@ sampler2D _CameraGBufferTexture4;
 	#endif
 #else 
 	#include "featureMap.cginc"
-	#include"height.cginc"
+	#include "height.cginc"
 	#include "normals.cginc"
 	#include "adjustProcess.cginc"
 	#include "vert.cginc"
