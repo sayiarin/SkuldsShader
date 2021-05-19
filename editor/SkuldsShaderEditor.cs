@@ -293,6 +293,8 @@ public class SkuldsShaderEditor : ShaderGUI
             materialEditor.TextureProperty(fallbackTexture, "Fallback Texture:");
             MaterialProperty mainTexture = FindProperty("_BaseTexture", properties);
             materialEditor.TextureProperty(mainTexture, "Main Texture:");
+            MaterialProperty textureIndex = FindProperty("_ActiveTextureIndex", properties);
+            materialEditor.RangeProperty(textureIndex, "Texture Index:");
             MaterialProperty color = FindProperty("_Color", properties);
             materialEditor.ColorProperty(color, "Color:");
             MaterialProperty hue = FindProperty("_Hue", properties);

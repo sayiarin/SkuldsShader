@@ -3,8 +3,7 @@ float4 frag(v2f fragin, uint isFrontFace : SV_IsFrontFace) : SV_Target
 {
 	PIO process = createProcess(fragin, isFrontFace);
 	//get the uv coordinates and set the base color.
-	float4 color = tex2D(_BaseTexture, fragin.uv + process.uvOffset);
-
+	float4 color = UNITY_SAMPLE_TEX2DARRAY(_BaseTexture, float3(fragin.uv + process.uvOffset, _ActiveTextureIndex));
 
 	float4 nextCol = tex2D(_Tex1, fragin.uv + process.uvOffset);
 	float test = saturate((process.worldPosition.y - _Height1) *_FadeRange);

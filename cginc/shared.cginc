@@ -103,8 +103,9 @@ float _LMProbeAmount;
 float _LMDirectAmount;
 
 //Base Layer paramters
-sampler2D _BaseTexture;
+UNITY_DECLARE_TEX2DARRAY(_BaseTexture);
 float4 _BaseTexture_ST;
+int _ActiveTextureIndex;
 sampler2D _DetailTex;
 float4 _DetailTex_ST;
 sampler2D _FeatureTex;

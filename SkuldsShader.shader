@@ -15,7 +15,8 @@
 		[space]
 		// _MainTex variable will be used by the Diffuse Fallback Shader
 		_MainTex("Fallback Texture", 2D) = "white" {}
-		_BaseTexture("Base Layer", 2D) = "white" {}
+		_BaseTexture("Base Layer", 2DArray) = "" {}
+		_ActiveTextureIndex("Texture Index", Range(0, 15)) = 0
 		[HDR]_Color("Base Color",Color) = (1,1,1,1)
 		_Hue("Hue",Range(-180,180)) = 0
 		_Saturation("Saturation",Range(-1,10)) = 0
