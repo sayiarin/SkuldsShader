@@ -2,7 +2,7 @@
 using UnityEditor;
 using System;
 
-namespace SayiTools
+namespace SkuldShaderTools
 {
     public class TextureArrayCreator : ScriptableObject
     {
